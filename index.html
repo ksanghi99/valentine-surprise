@@ -401,85 +401,72 @@
             </div>
         </section>
         
-       <!-- ===== PAGE 21: GAME 4 - LOVE STORY CONNECT ===== -->
+       <!-- ===== PAGE 21: GAME 4 - LOVE STORY MATCH ===== -->
 <section id="page21" class="page">
     <div class="page-content">
-        <h2>Connect Our Love Story 💖</h2>
-        <p>Match the memories to complete our story timeline</p>
+        <h2>Match Our Love Stories 💖</h2>
+        <p>Connect each memory with its beautiful answer</p>
         
         <div class="love-bar-container">
-            <div class="love-bar-label">Love Memories Connected: <span id="connected-count">0</span>/8</div>
+            <div class="love-bar-label">Memories Matched: <span id="connected-count">0</span>/8</div>
             <div class="love-bar">
                 <div class="love-fill" id="love-fill-4" style="width: 0%"></div>
             </div>
             <div class="love-percent" id="love-percent-4">0%</div>
         </div>
         
-        <div class="hint-box" id="hint-box" style="display: none;">
-            <i class="fas fa-lightbulb"></i> 
-            <span id="hint-text">Hint will appear here after 2 wrong attempts</span>
+        <!-- Current Question Display -->
+        <div class="current-question-display" id="current-question-display">
+            <div class="question-prompt">
+                <i class="fas fa-heart question-icon"></i>
+                <span id="current-question-text">Click a question number to begin</span>
+            </div>
+            <div class="question-hint" id="question-hint"></div>
         </div>
         
-        <!-- Love Story Connect Game Container -->
-        <div class="love-connect-game" id="love-connect-game">
-            
-            <!-- Left Column: Question Numbers -->
-            <div class="connect-column left-column">
-                <h3><i class="fas fa-heart"></i> Our Memories</h3>
-                <div class="number-buttons" id="number-buttons">
-                    <!-- Numbers will be added by JavaScript -->
-                </div>
-            </div>
-            
-            <!-- Center: Question Display & Connections -->
-            <div class="connect-column center-column">
-                <div class="connection-display">
-                    <div class="current-question-box" id="current-question-box">
-                        <div class="question-icon" id="question-icon">💭</div>
-                        <div class="question-text" id="question-text">
-                            Click a number on the left to see a memory question
-                        </div>
-                    </div>
-                    
-                    <!-- SVG for connection lines -->
-                    <svg class="connection-lines" id="connection-lines" width="100%" height="100%">
-                        <!-- Lines will be drawn here -->
-                    </svg>
-                </div>
-                
-                <div class="instructions">
-                    <i class="fas fa-mouse-pointer"></i> Click a number, then click matching letter
-                </div>
-            </div>
-            
-            <!-- Right Column: Answer Letters -->
-            <div class="connect-column right-column">
-                <h3><i class="fas fa-star"></i> The Answers</h3>
-                <div class="letter-buttons" id="letter-buttons">
-                    <!-- Letters will be added by JavaScript -->
-                </div>
-            </div>
-            
-        </div> <!-- End love-connect-game -->
+        <!-- Hint Box -->
+        <div class="hint-box" id="hint-box" style="display: none;">
+            <i class="fas fa-lightbulb"></i> 
+            <span id="hint-text">Need help? Try again!</span>
+        </div>
         
-        <!-- Romantic Reveal Popup (Hidden by default) -->
+        <!-- Game Container -->
+        <div class="love-match-game" id="love-match-game">
+            <!-- Left: Question Numbers -->
+            <div class="match-column questions-column">
+                <h3><i class="fas fa-question-circle"></i> Memories</h3>
+                <div class="match-items" id="question-items">
+                    <!-- Questions will be added by JS -->
+                </div>
+            </div>
+            
+            <!-- Right: Answers -->
+            <div class="match-column answers-column">
+                <h3><i class="fas fa-star"></i> Answers</h3>
+                <div class="match-items" id="answer-items">
+                    <!-- Answers will be added by JS -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Romantic Reveal Popup -->
         <div class="romantic-reveal-popup" id="romantic-reveal-popup">
             <div class="reveal-content">
                 <button class="close-reveal" onclick="closeReveal()">
                     <i class="fas fa-times"></i>
                 </button>
                 <div class="reveal-icon" id="reveal-icon">💖</div>
-                <div class="reveal-title">Memory Unlocked! 💘</div>
+                <div class="reveal-title">Memory Matched! 💘</div>
                 <div class="reveal-message" id="reveal-message"></div>
                 <div class="reveal-footer">Our love story continues...</div>
             </div>
         </div>
         
         <div class="game-controls">
-            <button class="btn" onclick="resetConnectGame()">
+            <button class="btn" onclick="resetMatchGame()">
                 <i class="fas fa-redo"></i> Reset Game
             </button>
-            <button class="btn secondary-btn" onclick="goToPage(22)" id="connect-next-btn" style="display:none;">
+            <button class="btn secondary-btn" onclick="goToPage(22)" id="match-next-btn" style="display:none;">
                 Continue to Final <i class="fas fa-arrow-right"></i>
             </button>
         </div>
