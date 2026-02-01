@@ -1,6 +1,6 @@
 /* ============================================
    VALENTINE SURPRISE - COMPLETE JAVASCRIPT
-   All 4 games working with beautiful UI
+   FIXED: Maze game arrows, Removed music player, Fixed video
    ============================================ */
 
 console.log("💝 Valentine Surprise Started!");
@@ -32,6 +32,7 @@ const compliments = [
 // Game 2: Maze
 let playerPosition = { x: 15, y: 15 };
 let mazeCompleted = false;
+let mazeEventListenerAdded = false;
 
 // Game 3: Riddles
 let currentRiddle = 0;
@@ -225,18 +226,6 @@ let matchGameState = {
 };
 
 // ======================
-// HELPER FUNCTIONS
-// ======================
-
-function clearConnections() {
-    console.log("clearConnections called");
-}
-
-function resetConnectGame() {
-    console.log("resetConnectGame called");
-}
-
-// ======================
 // PAGE NAVIGATION
 // ======================
 
@@ -295,19 +284,19 @@ function initializePage(pageNumber) {
         case 10: case 11: case 12: case 13: case 14: case 15: case 16:
             updateDayNavigation(pageNumber - 9);
             break;
-        case 18: // Transition 4
-            startAutoTransition(8, 19, 'countdown4');
+        case 17: // Transition 4
+            startAutoTransition(8, 18, 'countdown4');
             break;
-        case 19: // Game 3
+        case 18: // Game 3
             setupRiddles();
             break;
-        case 20: // Transition 5
-            startAutoTransition(8, 21, 'countdown5');
+        case 19: // Transition 5
+            startAutoTransition(8, 20, 'countdown5');
             break;
-        case 21: // Game 4
+        case 20: // Game 4
             initializeMatchGame();
             break;
-        case 22: // Video Page
+        case 21: // Video Page
             console.log("🎬 Video page initialized");
             break;
     }
@@ -375,54 +364,6 @@ function funnyNo() {
     const messageDiv = document.createElement('div');
     messageDiv.textContent = randomMessage;
     messageDiv.className = 'floating-message';
-    
-    if (!document.querySelector('#funnyNoStyle')) {
-        const style = document.createElement('style');
-        style.id = 'funnyNoStyle';
-        style.textContent = `
-            .floating-message {
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background: linear-gradient(45deg, #e74c89, #ff6b8b);
-                color: white;
-                padding: 20px 40px;
-                border-radius: 50px;
-                font-size: 1.5rem;
-                font-weight: bold;
-                z-index: 9999;
-                animation: floatMessage 2s ease forwards;
-                box-shadow: 0 15px 35px rgba(231, 76, 137, 0.4);
-                text-align: center;
-                min-width: 300px;
-                max-width: 80%;
-            }
-            
-            @keyframes floatMessage {
-                0% {
-                    opacity: 0;
-                    transform: translate(-50%, -50%) scale(0.5);
-                }
-                20% {
-                    opacity: 1;
-                    transform: translate(-50%, -50%) scale(1.1);
-                }
-                40% {
-                    transform: translate(-50%, -50%) scale(1);
-                }
-                80% {
-                    opacity: 1;
-                    transform: translate(-50%, -50%) scale(1);
-                }
-                100% {
-                    opacity: 0;
-                    transform: translate(-50%, -50%) scale(0.8);
-                }
-            }
-        `;
-        document.head.appendChild(style);
-    }
     
     document.body.appendChild(messageDiv);
     setTimeout(() => {
@@ -557,10 +498,12 @@ function stopGame1() {
 }
 
 // ======================
-// GAME 2: MAZE (FIXED)
+// GAME 2: MAZE (FIXED COMPLETELY)
 // ======================
 
 function setupMaze() {
+    console.log("🚀 Setting up maze game...");
+    
     playerPosition = { x: 15, y: 15 };
     mazeCompleted = false;
     
@@ -568,22 +511,33 @@ function setupMaze() {
     const player = document.getElementById('player');
     
     if (container && player) {
-        // FIX: Call drawMazeWalls to create the maze
+        // Clear existing walls
+        const existingWalls = container.querySelectorAll('.maze-wall');
+        existingWalls.forEach(wall => wall.remove());
+        
+        // Draw maze walls
         drawMazeWalls();
         
+        // Position player
         player.style.left = '15px';
         player.style.top = '15px';
         
+        // Position end point
         const endPoint = document.getElementById('end-point');
         if (endPoint) {
             endPoint.style.left = '550px';
             endPoint.style.top = '400px';
         }
         
-        // FIX: Add event listener for keyboard controls
+        // Remove old event listener first
+        document.removeEventListener('keydown', handleMazeKeyPress);
+        
+        // Add new event listener
         document.addEventListener('keydown', handleMazeKeyPress);
+        mazeEventListenerAdded = true;
         
         console.log("✅ Maze initialized with keyboard controls");
+        console.log("🔑 Listening for arrow keys and WASD...");
     }
 }
 
@@ -598,7 +552,7 @@ function drawMazeWalls() {
         [638, 0, 12, 500],
         [0, 488, 650, 12],
         
-        // Maze structure
+        // Maze structure - FIXED COLLISION
         [80, 0, 12, 120],
         [160, 40, 12, 160],
         [80, 120, 100, 12],
@@ -627,15 +581,13 @@ function drawMazeWalls() {
         [440, 360, 12, 80],
         [360, 420, 100, 12],
         
-        // Path to end
+        // Path to end - FIXED
         [520, 350, 100, 12],
         [580, 400, 60, 12],
         [500, 450, 100, 12],
         [550, 300, 12, 50],
         [600, 300, 12, 100],
     ];
-    
-    container.querySelectorAll('.maze-wall').forEach(wall => wall.remove());
     
     walls.forEach(([x, y, width, height]) => {
         const wall = document.createElement('div');
@@ -651,7 +603,9 @@ function drawMazeWalls() {
 function handleMazeKeyPress(event) {
     if (mazeCompleted) return;
     
-    const step = 20;
+    console.log("Key pressed:", event.key);
+    
+    const step = 15; // Smaller step for smoother movement
     let newX = playerPosition.x;
     let newY = playerPosition.y;
     
@@ -678,6 +632,13 @@ function handleMazeKeyPress(event) {
     
     event.preventDefault();
     
+    // Check boundaries
+    if (newX < 15 || newX > 585 || newY < 15 || newY > 425) {
+        console.log("Out of bounds");
+        return;
+    }
+    
+    // Check collision with walls
     if (!checkMazeCollision(newX, newY)) {
         playerPosition.x = newX;
         playerPosition.y = newY;
@@ -686,30 +647,31 @@ function handleMazeKeyPress(event) {
         if (player) {
             player.style.left = `${newX}px`;
             player.style.top = `${newY}px`;
-            player.style.transition = 'left 0.1s linear, top 0.1s linear';
         }
         
+        // Check if reached end point
         const endPoint = document.getElementById('end-point');
         if (endPoint) {
             const endRect = endPoint.getBoundingClientRect();
             const playerRect = player.getBoundingClientRect();
             
+            // Calculate distance between player and end point
             const distance = Math.sqrt(
                 Math.pow(endRect.left - playerRect.left, 2) +
                 Math.pow(endRect.top - playerRect.top, 2)
             );
             
-            if (distance < 40) {
+            if (distance < 50) {
                 mazeCompleted = true;
                 stopMazeControls();
                 
-                player.style.animation = 'pop 0.5s ease infinite';
+                player.style.animation = 'pulse 1s infinite';
                 setTimeout(() => {
                     player.style.animation = '';
-                    alert('🎉 You found your way to my heart! ❤️');
+                    showToast('🎉 You found your way to my heart! ❤️');
                     setTimeout(() => {
                         goToPage(8);
-                    }, 500);
+                    }, 1500);
                 }, 1000);
             }
         }
@@ -719,24 +681,23 @@ function handleMazeKeyPress(event) {
 function checkMazeCollision(x, y) {
     const playerSize = 45;
     
-    if (x < 10 || x > 595 || y < 10 || y > 435) {
-        return true;
-    }
-    
     const walls = document.querySelectorAll('.maze-wall');
     for (const wall of walls) {
         const wallRect = wall.getBoundingClientRect();
         const containerRect = document.getElementById('maze-container').getBoundingClientRect();
         
+        // Adjust wall position relative to container
         const wallX = wallRect.left - containerRect.left;
         const wallY = wallRect.top - containerRect.top;
         const wallWidth = wallRect.width;
         const wallHeight = wallRect.height;
         
+        // Check collision
         if (x < wallX + wallWidth &&
             x + playerSize > wallX &&
             y < wallY + wallHeight &&
             y + playerSize > wallY) {
+            console.log("Collision detected!");
             return true;
         }
     }
@@ -745,10 +706,15 @@ function checkMazeCollision(x, y) {
 }
 
 function stopMazeControls() {
-    document.removeEventListener('keydown', handleMazeKeyPress);
+    if (mazeEventListenerAdded) {
+        document.removeEventListener('keydown', handleMazeKeyPress);
+        mazeEventListenerAdded = false;
+        console.log("🗝️ Maze controls removed");
+    }
 }
 
 function resetMaze() {
+    console.log("🔄 Resetting maze...");
     stopMazeControls();
     setupMaze();
 }
@@ -768,26 +734,6 @@ function updateDayNavigation(activeDay) {
 }
 
 // ======================
-// MUSIC PLAYER
-// ======================
-
-function setupMusicPlayer() {
-    console.log("Music player ready");
-}
-
-function playMusic() {
-    showToast('🎵 Playing our song...');
-}
-
-function pauseMusic() {
-    showToast('⏸️ Music paused');
-}
-
-function replayMusic() {
-    showToast('🔄 Replaying our song!');
-}
-
-// ======================
 // GAME 3: RIDDLES
 // ======================
 
@@ -801,7 +747,7 @@ function setupRiddles() {
 function showRiddle() {
     if (currentRiddle >= riddles.length) {
         setTimeout(() => {
-            goToPage(20);
+            goToPage(19);
         }, 1500);
         return;
     }
@@ -1176,6 +1122,26 @@ function resetMatchGame() {
 }
 
 // ======================
+// VIDEO FUNCTION
+// ======================
+
+function playVideo() {
+    const video = document.getElementById('nostalgic-video');
+    const playButton = document.querySelector('.video-play-button');
+    
+    if (video && playButton) {
+        video.play().then(() => {
+            console.log("🎬 Video playing...");
+            playButton.style.display = 'none';
+            video.setAttribute('controls', 'controls');
+        }).catch(error => {
+            console.error("Video play error:", error);
+            showToast("⚠️ Click the video to play manually");
+        });
+    }
+}
+
+// ======================
 // UTILITY FUNCTIONS
 // ======================
 
@@ -1185,26 +1151,7 @@ function updateLoveBar(fillId, percentId, percent) {
     
     if (fill && percentElement) {
         fill.style.width = `${percent}%`;
-        
-        let currentPercent = parseInt(percentElement.textContent) || 0;
-        const targetPercent = Math.round(percent);
-        const step = Math.ceil(Math.abs(targetPercent - currentPercent) / 10);
-        
-        const animatePercent = () => {
-            if (currentPercent < targetPercent) {
-                currentPercent = Math.min(currentPercent + step, targetPercent);
-            } else if (currentPercent > targetPercent) {
-                currentPercent = Math.max(currentPercent - step, targetPercent);
-            }
-            
-            percentElement.textContent = `${currentPercent}%`;
-            
-            if (currentPercent !== targetPercent) {
-                requestAnimationFrame(animatePercent);
-            }
-        };
-        
-        animatePercent();
+        percentElement.textContent = `${Math.round(percent)}%`;
     }
 }
 
@@ -1241,37 +1188,8 @@ function showToast(message) {
     }, 3000);
 }
 
-if (!document.querySelector('#toastStyles')) {
-    const style = document.createElement('style');
-    style.id = 'toastStyles';
-    style.textContent = `
-        @keyframes toastSlideUp {
-            from {
-                opacity: 0;
-                transform: translateX(-50%) translateY(100%);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(-50%) translateY(0);
-            }
-        }
-        
-        @keyframes toastSlideDown {
-            from {
-                opacity: 1;
-                transform: translateX(-50%) translateY(0);
-            }
-            to {
-                opacity: 0;
-                transform: translateX(-50%) translateY(100%);
-            }
-        }
-    `;
-    document.head.appendChild(style);
-}
-
 // ======================
-// SKIP PANEL (FIXED)
+// SKIP PANEL
 // ======================
 
 function setupSkipPanel() {
@@ -1344,16 +1262,15 @@ function updateSkipPanel() {
         14: "Day 5",
         15: "Day 6",
         16: "Day 7",
-        17: "Music Player",
-        18: "Transition 4",
-        19: "Game 3: Riddles",
-        20: "Transition 5",
-        21: "Game 4: Memory",
-        22: "Nostalgic Dance Video",
-        23: "Final Message"
+        17: "Transition 4",
+        18: "Game 3: Riddles",
+        19: "Transition 5",
+        20: "Game 4: Memory",
+        21: "Nostalgic Dance Video",
+        22: "Final Message"
     };
     
-    for (let i = 1; i <= 23; i++) {
+    for (let i = 1; i <= 22; i++) {
         const btn = document.createElement('button');
         btn.className = 'skip-page-btn';
         btn.textContent = `${i}. ${pageNames[i] || `Page ${i}`}`;
@@ -1403,30 +1320,6 @@ function createFloatingHearts() {
         `;
         container.appendChild(heart);
     }
-    
-    if (!document.querySelector('#floatingHeartsStyle')) {
-        const style = document.createElement('style');
-        style.id = 'floatingHeartsStyle';
-        style.textContent = `
-            @keyframes float {
-                0% {
-                    transform: translateY(100vh) rotate(0deg);
-                    opacity: 0;
-                }
-                10% {
-                    opacity: 0.7;
-                }
-                90% {
-                    opacity: 0.7;
-                }
-                100% {
-                    transform: translateY(-100px) rotate(360deg);
-                    opacity: 0;
-                }
-            }
-        `;
-        document.head.appendChild(style);
-    }
 }
 
 // ======================
@@ -1441,9 +1334,6 @@ document.addEventListener('DOMContentLoaded', function() {
     window.goToPage = goToPage;
     window.funnyNo = funnyNo;
     window.resetMaze = resetMaze;
-    window.playMusic = playMusic;
-    window.pauseMusic = pauseMusic;
-    window.replayMusic = replayMusic;
     window.showHint = showHint;
     window.resetMatchGame = resetMatchGame;
     window.closeReveal = closeReveal;
@@ -1454,7 +1344,49 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log("🎉 Everything ready! Enjoy the Valentine's surprise!");
 });
 
-window.onerror = function(message, source, lineno, colno, error) {
-    console.error("Script Error:", message);
-    return true;
-};
+// Add toast styles
+if (!document.querySelector('#toastStyles')) {
+    const style = document.createElement('style');
+    style.id = 'toastStyles';
+    style.textContent = `
+        @keyframes toastSlideUp {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+        
+        @keyframes toastSlideDown {
+            from {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(-50%) translateY(100%);
+            }
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+}
