@@ -1214,7 +1214,7 @@ function initializeMatchGame() {
     updateProgress();
     clearQuestionDisplay();
     hideHint();
-    clearConnections();
+    // clearConnections();
     
     // Hide next button
     document.getElementById('match-next-btn').style.display = 'none';
@@ -1950,3 +1950,12 @@ window.onerror = function(message, source, lineno, colno, error) {
     // Don't show alerts to avoid disturbing user experience
     return true;
 };
+function clearConnections() {
+    // Empty function - does nothing but prevents error
+    console.log("clearConnections called");
+}
+
+function resetConnectGame() {
+    // Empty function - does nothing but prevents error  
+    console.log("resetConnectGame called");
+}
