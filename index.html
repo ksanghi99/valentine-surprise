@@ -325,35 +325,89 @@
             </div>
         </section>
         
-        <!-- PAGE 17: MUSIC PLAYER -->
-        <section id="page17" class="page">
-            <div class="page-content">
-                <h2>Our Song</h2>
-                <p>Let's dance to our song for 45 seconds...</p>
-                
-                <div class="music-player">
-                    <iframe width="100%" height="315" src="https://www.youtube.com/embed/2Vv-BfVoq4g?start=0&end=45&controls=1&modestbranding=1" 
-                            frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen title="Our Song"></iframe>
-                    
-                    <div class="music-controls">
-                        <button class="control-btn" onclick="playMusic()">
-                            <i class="fas fa-play"></i> Play
-                        </button>
-                        <button class="control-btn" onclick="pauseMusic()">
-                            <i class="fas fa-pause"></i> Pause
-                        </button>
-                        <button class="control-btn" onclick="replayMusic()">
-                            <i class="fas fa-redo"></i> Replay
-                        </button>
-                    </div>
+      <!-- ===== NOSTALGIC DANCE VIDEO ===== -->
+<section id="page22" class="page">
+    <div class="page-content">
+        <h2>Our First Dance 💃🕺</h2>
+        <p class="subtitle">A trip down memory lane...</p>
+        
+        <!-- Video Container -->
+        <div class="video-container" id="video-container">
+            <div class="video-placeholder">
+                <div class="play-button-overlay" onclick="playNostalgicVideo()">
+                    <i class="fas fa-play-circle"></i>
+                    <span>Click to Relive Our Moment</span>
                 </div>
-                
-                <button class="btn" onclick="goToPage(18)">
-                    Continue to Riddles <i class="fas fa-arrow-right"></i>
-                </button>
+                <div class="video-message">
+                    <i class="fas fa-heart"></i>
+                    <p>Our first dance together - awkward, funny, and perfectly us!</p>
+                </div>
             </div>
-        </section>
+            
+            <!-- Video Element (Hidden Initially) -->
+            <video id="nostalgic-video" controls style="display: none;">
+                <source src="videos/our-dance.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        
+        <!-- Video Details -->
+        <div class="video-details">
+            <div class="detail-card">
+                <i class="fas fa-calendar-heart"></i>
+                <div>
+                    <h4>When:</h4>
+                    <p>That magical evening when we didn't care who was watching</p>
+                </div>
+            </div>
+            
+            <div class="detail-card">
+                <i class="fas fa-music"></i>
+                <div>
+                    <h4>The Song:</h4>
+                    <p>The random song that became "our song" forever</p>
+                </div>
+            </div>
+            
+            <div class="detail-card">
+                <i class="fas fa-laugh-beam"></i>
+                <div>
+                    <h4>Memory:</h4>
+                    <p>Two left feet, endless laughter, and pure joy</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Cute Message -->
+        <div class="cute-message-box">
+            <div class="message-content">
+                <i class="fas fa-quote-left"></i>
+                <p class="message-text">
+                    I still remember how nervous we both were, 
+                    how your hand felt in mine, 
+                    how we kept stepping on each other's feet, 
+                    and how we didn't stop laughing the entire time. 
+                    That clumsy, perfect dance was the moment I knew...
+                </p>
+                <p class="message-signature">- Forever Yours</p>
+                <i class="fas fa-quote-right"></i>
+            </div>
+        </div>
+        
+        <!-- Video Controls -->
+        <div class="video-controls">
+            <button class="btn play-btn" onclick="playNostalgicVideo()" id="play-btn">
+                <i class="fas fa-play"></i> Watch Our Dance Again
+            </button>
+            <button class="btn secondary-btn" onclick="replayVideo()">
+                <i class="fas fa-redo"></i> Watch Once More
+            </button>
+            <button class="btn secondary-btn" onclick="goToPage(23)">
+                Continue <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+</section>
         
         <!-- PAGE 18: TRANSITION 4 -->
         <section id="page18" class="page">
