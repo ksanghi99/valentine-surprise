@@ -325,89 +325,36 @@
             </div>
         </section>
         
-    <!-- ===== VIDEO SECTION WITH ONLINE VIDEO ===== -->
-<section id="page22" class="page">
-    <div class="page-content">
-        <h2>Our First Dance 💃🕺</h2>
-        <p class="subtitle">Relive our magical moment...</p>
-        
-        <!-- Video Player -->
-        <div class="video-player">
-            <video controls width="100%" height="450">
-                <!-- ONLINE VIDEO - THIS WILL WORK -->
-                <source src="https://cdn.pixabay.com/video/2023/03/08/160902-801156655_large.mp4" type="video/mp4">
-                Your browser doesn't support video
-            </video>
-            
-            <div class="video-note">
-                <i class="fas fa-heart"></i>
-                <p>Click play to watch our beautiful memory!<br>
-                <small>(Using a placeholder video to test - your actual dance video will be here!)</small></p>
+        <!-- PAGE 17: MUSIC PLAYER -->
+        <section id="page17" class="page">
+            <div class="page-content">
+                <h2>Our Song 🎵</h2>
+                <p>This song reminds me of us. Every beat, every lyric, every melody feels like our love story.</p>
+                
+                <div class="music-player">
+                    <div class="player-placeholder">
+                        <i class="fas fa-music"></i>
+                        <p>Click play to listen to our special song!</p>
+                    </div>
+                </div>
+                
+                <div class="music-controls">
+                    <button class="control-btn" onclick="playMusic()" title="Play">
+                        <i class="fas fa-play"></i>
+                    </button>
+                    <button class="control-btn" onclick="pauseMusic()" title="Pause">
+                        <i class="fas fa-pause"></i>
+                    </button>
+                    <button class="control-btn" onclick="replayMusic()" title="Replay">
+                        <i class="fas fa-redo"></i>
+                    </button>
+                </div>
+                
+                <button class="btn" onclick="goToPage(18)">
+                    Continue to Riddles <i class="fas fa-arrow-right"></i>
+                </button>
             </div>
-        </div>
-        
-        <!-- Romantic Text -->
-        <div class="love-note">
-            <p>"That awkward, perfect dance where we stepped on each other's feet more times than we count... 
-            and I wouldn't change a single moment of it. You were, and always will be, my perfect dance partner."</p>
-            <p class="signature">— Forever your dance partner</p>
-        </div>
-        
-        <div style="text-align:center; margin-top:40px;">
-            <button class="btn" onclick="goToPage(23)">
-                Continue Journey <i class="fas fa-arrow-right"></i>
-            </button>
-        </div>
-    </div>
-</section>
-
-<style>
-.video-player {
-    max-width: 800px;
-    margin: 40px auto;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 20px 50px rgba(255, 107, 139, 0.3);
-    background: black;
-}
-
-.video-note {
-    background: linear-gradient(135deg, #ff6b8b, #e74c89);
-    color: white;
-    padding: 20px;
-    text-align: center;
-}
-
-.video-note i {
-    font-size: 2rem;
-    margin-bottom: 10px;
-}
-
-.video-note small {
-    opacity: 0.8;
-    font-size: 0.9rem;
-}
-
-.love-note {
-    max-width: 700px;
-    margin: 40px auto;
-    padding: 30px;
-    background: linear-gradient(135deg, #fff9fa, #ffeef1);
-    border-radius: 20px;
-    border: 3px solid #ffccd5;
-    font-style: italic;
-    font-size: 1.2rem;
-    line-height: 1.6;
-    color: #5a3d5c;
-}
-
-.signature {
-    text-align: right;
-    font-weight: bold;
-    color: #e74c89;
-    margin-top: 20px;
-}
-</style>
+        </section>
         
         <!-- PAGE 18: TRANSITION 4 -->
         <section id="page18" class="page">
@@ -455,97 +402,132 @@
             </div>
         </section>
         
-       <!-- ===== PAGE 21: GAME 4 - LOVE STORY MATCH ===== -->
-<section id="page21" class="page">
-    <div class="page-content">
-        <h2>Match Our Love Stories 💖</h2>
-        <p>Connect each memory with its beautiful answer</p>
-        
-        <div class="love-bar-container">
-            <div class="love-bar-label">Memories Matched: <span id="connected-count">0</span>/8</div>
-            <div class="love-bar">
-                <div class="love-fill" id="love-fill-4" style="width: 0%"></div>
-            </div>
-            <div class="love-percent" id="love-percent-4">0%</div>
-        </div>
-        
-        <!-- Current Question Display -->
-        <div class="current-question-display" id="current-question-display">
-            <div class="question-prompt">
-                <i class="fas fa-heart question-icon"></i>
-                <span id="current-question-text">Click a question number to begin</span>
-            </div>
-            <div class="question-hint" id="question-hint"></div>
-        </div>
+        <!-- PAGE 21: GAME 4 - LOVE STORY MATCH -->
+        <section id="page21" class="page">
+            <div class="page-content">
+                <h2>Match Our Love Stories 💖</h2>
+                <p>Connect each memory with its beautiful answer</p>
+                
+                <div class="love-bar-container">
+                    <div class="love-bar-label">Memories Matched: <span id="connected-count">0</span>/8</div>
+                    <div class="love-bar">
+                        <div class="love-fill" id="love-fill-4" style="width: 0%"></div>
+                    </div>
+                    <div class="love-percent" id="love-percent-4">0%</div>
+                </div>
+                
+                <!-- Current Question Display -->
+                <div class="current-question-display" id="current-question-display">
+                    <div class="question-prompt">
+                        <i class="fas fa-heart question-icon"></i>
+                        <span id="current-question-text">Click a question number to begin</span>
+                    </div>
+                    <div class="question-hint" id="question-hint"></div>
+                </div>
 
-        <!-- Picture Display - Add this AFTER the question display -->
-<div class="picture-display-container">
-    <!-- Placeholder shown when no picture is selected -->
-    <div class="picture-placeholder" id="picture-placeholder">
-        <i class="fas fa-heart"></i>
-        <span>Select a memory to see its picture</span>
-    </div>
-    
-    <!-- Actual picture (hidden by default) -->
-    <img src="" alt="Our Beautiful Memory" class="memory-picture" id="memory-picture">
-    
-    <!-- Picture caption -->
-    <div class="picture-caption" id="picture-caption">
-        Click a question number to see its picture!
-    </div>
-</div>
-        
-        <!-- Hint Box -->
-        <div class="hint-box" id="hint-box" style="display: none;">
-            <i class="fas fa-lightbulb"></i> 
-            <span id="hint-text">Need help? Try again!</span>
-        </div>
-        
-        <!-- Game Container -->
-        <div class="love-match-game" id="love-match-game">
-            <!-- Left: Question Numbers -->
-            <div class="match-column questions-column">
-                <h3><i class="fas fa-question-circle"></i> Memories</h3>
-                <div class="match-items" id="question-items">
-                    <!-- Questions will be added by JS -->
+                <!-- Picture Display -->
+                <div class="picture-display-container">
+                    <!-- Placeholder shown when no picture is selected -->
+                    <div class="picture-placeholder" id="picture-placeholder">
+                        <i class="fas fa-heart"></i>
+                        <span>Select a memory to see its picture</span>
+                    </div>
+                    
+                    <!-- Actual picture (hidden by default) -->
+                    <img src="" alt="Our Beautiful Memory" class="memory-picture" id="memory-picture">
+                    
+                    <!-- Picture caption -->
+                    <div class="picture-caption" id="picture-caption">
+                        Click a question number to see its picture!
+                    </div>
+                </div>
+                
+                <!-- Hint Box -->
+                <div class="hint-box" id="hint-box" style="display: none;">
+                    <i class="fas fa-lightbulb"></i> 
+                    <span id="hint-text">Need help? Try again!</span>
+                </div>
+                
+                <!-- Game Container -->
+                <div class="love-match-game" id="love-match-game">
+                    <!-- Left: Question Numbers -->
+                    <div class="match-column questions-column">
+                        <h3><i class="fas fa-question-circle"></i> Memories</h3>
+                        <div class="match-items" id="question-items">
+                            <!-- Questions will be added by JS -->
+                        </div>
+                    </div>
+                    
+                    <!-- Right: Answers -->
+                    <div class="match-column answers-column">
+                        <h3><i class="fas fa-star"></i> Answers</h3>
+                        <div class="match-items" id="answer-items">
+                            <!-- Answers will be added by JS -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Romantic Reveal Popup -->
+                <div class="romantic-reveal-popup" id="romantic-reveal-popup">
+                    <div class="reveal-content">
+                        <button class="close-reveal" onclick="closeReveal()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                        <div class="reveal-icon" id="reveal-icon">💖</div>
+                        <div class="reveal-title">Memory Matched! 💘</div>
+                        <div class="reveal-message" id="reveal-message"></div>
+                        <div class="reveal-footer">Our love story continues...</div>
+                    </div>
+                </div>
+                
+                <div class="game-controls">
+                    <button class="btn" onclick="resetMatchGame()">
+                        <i class="fas fa-redo"></i> Reset Game
+                    </button>
+                    <button class="btn secondary-btn" onclick="goToPage(22)" id="match-next-btn" style="display:none;">
+                        Continue to Video <i class="fas fa-arrow-right"></i>
+                    </button>
                 </div>
             </div>
-            
-            <!-- Right: Answers -->
-            <div class="match-column answers-column">
-                <h3><i class="fas fa-star"></i> Answers</h3>
-                <div class="match-items" id="answer-items">
-                    <!-- Answers will be added by JS -->
-                </div>
-            </div>
-        </div>
+        </section>
         
-        <!-- Romantic Reveal Popup -->
-        <div class="romantic-reveal-popup" id="romantic-reveal-popup">
-            <div class="reveal-content">
-                <button class="close-reveal" onclick="closeReveal()">
-                    <i class="fas fa-times"></i>
-                </button>
-                <div class="reveal-icon" id="reveal-icon">💖</div>
-                <div class="reveal-title">Memory Matched! 💘</div>
-                <div class="reveal-message" id="reveal-message"></div>
-                <div class="reveal-footer">Our love story continues...</div>
-            </div>
-        </div>
-        
-        <div class="game-controls">
-            <button class="btn" onclick="resetMatchGame()">
-                <i class="fas fa-redo"></i> Reset Game
-            </button>
-            <button class="btn secondary-btn" onclick="goToPage(22)" id="match-next-btn" style="display:none;">
-                Continue to Final <i class="fas fa-arrow-right"></i>
-            </button>
-        </div>
-    </div>
-</section>
-        
-        <!-- PAGE 22: FINAL MESSAGE -->
+        <!-- PAGE 22: NOSTALGIC DANCE VIDEO -->
         <section id="page22" class="page">
+            <div class="page-content">
+                <h2>Our First Dance 💃🕺</h2>
+                <p class="subtitle">Relive our magical moment...</p>
+                
+                <!-- Simple Video Player -->
+                <div class="video-player">
+                    <video controls width="100%" height="450">
+                        <!-- YOUR DANCE VIDEO -->
+                        <source src="videos/our-dance.mp4" type="video/mp4">
+                        Your browser doesn't support video
+                    </video>
+                    
+                    <div class="video-note">
+                        <i class="fas fa-heart"></i>
+                        <p>Click play to watch our beautiful memory!</p>
+                    </div>
+                </div>
+                
+                <!-- Romantic Text -->
+                <div class="love-note">
+                    <p>"That awkward, perfect dance where we stepped on each other's feet more times than we count... 
+                    and I wouldn't change a single moment of it. You were, and always will be, my perfect dance partner."</p>
+                    <p class="signature">— Forever your dance partner</p>
+                </div>
+                
+                <div style="text-align:center; margin-top:40px;">
+                    <button class="btn" onclick="goToPage(23)">
+                        Continue to Final Message <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- PAGE 23: FINAL MESSAGE -->
+        <section id="page23" class="page">
             <div class="page-content">
                 <div class="heart-icon">💖</div>
                 <h2>My Dearest Mithi,</h2>
