@@ -273,8 +273,8 @@ function initializePage(pageNumber) {
             startAutoTransition(8, 21, 'countdown5');
             break;
         case 21: // Game 4
-            initializeConnectGame();
-            break;
+            initializeMatchGame();
+    break;
     }
 }
 
@@ -985,11 +985,11 @@ function showHint() {
 }
 
 // ======================
-// GAME 4: LOVE STORY CONNECT
+// GAME 4: LOVE STORY MATCH
 // ======================
 
-// Love story data
-const loveStoryConnectData = [
+// Love story data - 8 questions with correct answers
+const loveStoryMatchData = [
     {
         id: 1,
         question: "🎯 What do I remember as our first meeting?",
@@ -1049,7 +1049,7 @@ const loveStoryConnectData = [
 ];
 
 // Game state
-let connectGameState = {
+let matchGameState = {
     selectedQuestion: null,
     completedPairs: [],
     wrongAttempts: {},
@@ -1057,9 +1057,9 @@ let connectGameState = {
     connections: []
 };
 
-function setupConnectGame() {
+function initializeMatchGame() {
     // Reset game state
-    connectGameState = {
+    matchGameState = {
         selectedQuestion: null,
         completedPairs: [],
         wrongAttempts: {},
@@ -1068,223 +1068,250 @@ function setupConnectGame() {
     };
     
     // Shuffle answers
-    const answers = loveStoryConnectData.map(item => item.answer);
-    connectGameState.shuffledAnswers = shuffleArray([...answers]);
+    const answers = loveStoryMatchData.map(item => item.answer);
+    matchGameState.shuffledAnswers = shuffleArray([...answers]);
     
-    // Update UI
+    // Render UI
+    renderQuestions();
+    renderAnswers();
     updateProgress();
-    renderNumberButtons();
-    renderLetterButtons();
     clearQuestionDisplay();
-    clearConnections();
     hideHint();
+    clearConnections();
     
     // Hide next button
-    document.getElementById('connect-next-btn').style.display = 'none';
+    document.getElementById('match-next-btn').style.display = 'none';
 }
 
-function renderNumberButtons() {
-    const container = document.getElementById('number-buttons');
+function renderQuestions() {
+    const container = document.getElementById('question-items');
     container.innerHTML = '';
     
-    loveStoryConnectData.forEach(item => {
-        const button = document.createElement('button');
-        button.className = 'number-btn';
-        if (connectGameState.completedPairs.includes(item.id)) {
-            button.classList.add('completed');
+    loveStoryMatchData.forEach(item => {
+        const questionItem = document.createElement('div');
+        questionItem.className = 'match-item question-item';
+        if (matchGameState.completedPairs.includes(item.id)) {
+            questionItem.classList.add('completed');
         }
-        button.textContent = `${item.id} ❤️`;
-        button.onclick = () => selectQuestion(item.id);
+        questionItem.dataset.id = item.id;
+        questionItem.onclick = () => selectQuestion(item.id);
         
-        container.appendChild(button);
+        questionItem.innerHTML = `
+            <div class="question-number">${item.id}</div>
+            <div class="question-text">
+                <span class="question-icon">${item.icon}</span>
+                ${matchGameState.completedPairs.includes(item.id) ? 'Completed!' : 'Click to select'}
+            </div>
+        `;
+        
+        container.appendChild(questionItem);
     });
 }
 
-function renderLetterButtons() {
-    const container = document.getElementById('letter-buttons');
+function renderAnswers() {
+    const container = document.getElementById('answer-items');
     container.innerHTML = '';
     
     const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
     
-    connectGameState.shuffledAnswers.forEach((answer, index) => {
-        const button = document.createElement('button');
-        button.className = 'letter-btn';
+    matchGameState.shuffledAnswers.forEach((answer, index) => {
+        const answerItem = document.createElement('div');
+        answerItem.className = 'match-item answer-item';
         
         // Check if this answer is already completed
-        const completedItem = loveStoryConnectData.find(item => 
-            connectGameState.completedPairs.includes(item.id) && 
-            connectGameState.shuffledAnswers[index] === item.answer
+        const completedItem = loveStoryMatchData.find(item => 
+            matchGameState.completedPairs.includes(item.id) && 
+            matchGameState.shuffledAnswers[index] === item.answer
         );
         
         if (completedItem) {
-            button.classList.add('completed');
+            answerItem.classList.add('completed');
         }
         
-        button.textContent = `${letters[index]}`;
-        button.dataset.answerIndex = index;
-        button.onclick = () => selectAnswer(index);
+        answerItem.dataset.index = index;
+        answerItem.onclick = () => selectAnswer(index);
         
-        container.appendChild(button);
+        answerItem.innerHTML = `
+            <div class="answer-letter">${letters[index]}</div>
+            <div class="answer-text">${answer}</div>
+        `;
+        
+        container.appendChild(answerItem);
     });
 }
 
 function selectQuestion(questionId) {
     // Don't select if already completed
-    if (connectGameState.completedPairs.includes(questionId)) return;
+    if (matchGameState.completedPairs.includes(questionId)) return;
     
     // Update selected question
-    connectGameState.selectedQuestion = questionId;
+    matchGameState.selectedQuestion = questionId;
     
     // Update UI
-    document.querySelectorAll('.number-btn').forEach(btn => {
-        btn.classList.remove('selected');
+    document.querySelectorAll('.question-item').forEach(item => {
+        item.classList.remove('selected');
     });
     
-    const selectedBtn = document.querySelector(`.number-btn:nth-child(${questionId})`);
-    if (selectedBtn) {
-        selectedBtn.classList.add('selected');
+    const selectedItem = document.querySelector(`.question-item[data-id="${questionId}"]`);
+    if (selectedItem) {
+        selectedItem.classList.add('selected');
     }
     
     // Display question
-    const questionData = loveStoryConnectData.find(item => item.id === questionId);
+    const questionData = loveStoryMatchData.find(item => item.id === questionId);
     if (questionData) {
-        document.getElementById('question-icon').textContent = getQuestionIcon(questionId);
-        document.getElementById('question-text').textContent = questionData.question;
+        document.getElementById('current-question-text').textContent = questionData.question;
+        document.querySelector('.question-icon').textContent = questionData.icon;
+        document.getElementById('question-hint').textContent = '';
     }
     
     // Clear any wrong selection styling
-    document.querySelectorAll('.letter-btn.wrong').forEach(btn => {
-        btn.classList.remove('wrong');
+    document.querySelectorAll('.answer-item.wrong').forEach(item => {
+        item.classList.remove('wrong');
     });
 }
 
 function selectAnswer(answerIndex) {
-    if (!connectGameState.selectedQuestion) return;
+    if (!matchGameState.selectedQuestion) {
+        showHint("First select a question number from the left!");
+        return;
+    }
     
-    const questionId = connectGameState.selectedQuestion;
-    const questionData = loveStoryConnectData.find(item => item.id === questionId);
-    const selectedAnswer = connectGameState.shuffledAnswers[answerIndex];
+    const questionId = matchGameState.selectedQuestion;
+    const questionData = loveStoryMatchData.find(item => item.id === questionId);
+    const selectedAnswer = matchGameState.shuffledAnswers[answerIndex];
     
-    // Get letter buttons
-    const letterButtons = document.querySelectorAll('.letter-btn');
-    const selectedButton = letterButtons[answerIndex];
+    // Get answer item
+    const answerItems = document.querySelectorAll('.answer-item');
+    const selectedAnswerItem = answerItems[answerIndex];
     
     // Check if correct
     if (questionData.answer === selectedAnswer) {
         // CORRECT MATCH!
-        connectGameState.completedPairs.push(questionId);
+        matchGameState.completedPairs.push(questionId);
         
         // Draw connection line
-        drawConnectionLine(questionId, answerIndex);
+        drawConnection(questionId, answerIndex);
         
         // Update UI
-        updateNumberButton(questionId, 'completed');
-        updateLetterButton(answerIndex, 'completed');
+        updateQuestionItem(questionId, 'completed');
+        updateAnswerItem(answerIndex, 'completed');
         
         // Show romantic reveal
-        showRomanticReveal(questionData.reveal, questionId);
+        showRomanticReveal(questionData.reveal, questionData.icon);
         
         // Update progress
         updateProgress();
         
+        // Clear selection
+        matchGameState.selectedQuestion = null;
+        clearQuestionDisplay();
+        document.querySelectorAll('.question-item.selected').forEach(item => {
+            item.classList.remove('selected');
+        });
+        
         // Check if game is complete
-        if (connectGameState.completedPairs.length === loveStoryConnectData.length) {
+        if (matchGameState.completedPairs.length === loveStoryMatchData.length) {
             setTimeout(() => {
-                document.getElementById('connect-next-btn').style.display = 'inline-block';
-                showRomanticReveal("🎉 You've connected all our beautiful memories! Our love story is perfectly woven together... ❤️", 'complete');
+                document.getElementById('match-next-btn').style.display = 'inline-block';
+                showRomanticReveal("🎉 Perfect! You've matched all our beautiful memories! Our love story is now complete... ❤️", '💖');
             }, 1000);
         }
         
-        // Reset selection
-        connectGameState.selectedQuestion = null;
-        clearQuestionDisplay();
-        
     } else {
         // WRONG ANSWER
-        selectedButton.classList.add('wrong');
+        selectedAnswerItem.classList.add('wrong');
         
         // Track wrong attempts
-        if (!connectGameState.wrongAttempts[questionId]) {
-            connectGameState.wrongAttempts[questionId] = 0;
+        if (!matchGameState.wrongAttempts[questionId]) {
+            matchGameState.wrongAttempts[questionId] = 0;
         }
-        connectGameState.wrongAttempts[questionId]++;
+        matchGameState.wrongAttempts[questionId]++;
         
         // Show hint after 2 wrong attempts
-        if (connectGameState.wrongAttempts[questionId] >= 2) {
+        if (matchGameState.wrongAttempts[questionId] >= 2) {
             showHint(questionData.hint);
         }
         
+        // Show wrong feedback
+        document.getElementById('question-hint').textContent = "Not quite right! Try another answer.";
+        document.getElementById('question-hint').style.color = "#ff6b6b";
+        
         // Reset selection after delay
         setTimeout(() => {
-            selectedButton.classList.remove('wrong');
-            connectGameState.selectedQuestion = null;
-            clearQuestionDisplay();
-            document.querySelectorAll('.number-btn.selected').forEach(btn => {
-                btn.classList.remove('selected');
-            });
+            selectedAnswerItem.classList.remove('wrong');
         }, 1000);
     }
 }
 
-function drawConnectionLine(questionId, answerIndex) {
-    const svg = document.getElementById('connection-lines');
+function drawConnection(questionId, answerIndex) {
+    // Remove old connection if exists
+    const oldConnection = document.querySelector(`.connection-line[data-pair="${questionId}"]`);
+    if (oldConnection) {
+        oldConnection.remove();
+    }
     
     // Get positions
-    const numberBtn = document.querySelector(`.number-btn:nth-child(${questionId})`);
-    const letterBtn = document.querySelector(`.letter-btn:nth-child(${answerIndex + 1})`);
+    const questionItem = document.querySelector(`.question-item[data-id="${questionId}"]`);
+    const answerItem = document.querySelector(`.answer-item[data-index="${answerIndex}"]`);
     
-    if (!numberBtn || !letterBtn) return;
+    if (!questionItem || !answerItem) return;
     
-    const numRect = numberBtn.getBoundingClientRect();
-    const letRect = letterBtn.getBoundingClientRect();
-    const svgRect = svg.getBoundingClientRect();
+    const questionRect = questionItem.getBoundingClientRect();
+    const answerRect = answerItem.getBoundingClientRect();
+    const gameRect = document.getElementById('love-match-game').getBoundingClientRect();
     
-    // Calculate positions relative to SVG
-    const x1 = numRect.right - svgRect.left + 15;
-    const y1 = numRect.top + numRect.height / 2 - svgRect.top;
-    const x2 = letRect.left - svgRect.left - 15;
-    const y2 = letRect.top + letRect.height / 2 - svgRect.top;
+    // Calculate positions
+    const startX = questionRect.right - gameRect.left;
+    const startY = questionRect.top + questionRect.height / 2 - gameRect.top;
+    const endX = answerRect.left - gameRect.left;
+    const endY = answerRect.top + answerRect.height / 2 - gameRect.top;
     
-    // Create curved line (heart shape curve)
-    const line = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    const midX = (x1 + x2) / 2;
-    const curveHeight = 50;
+    // Create connection line
+    const connectionLine = document.createElement('div');
+    connectionLine.className = 'connection-line';
+    connectionLine.dataset.pair = questionId;
     
-    // Create a gentle curve
-    const d = `M ${x1} ${y1} 
-               C ${midX} ${y1 - curveHeight}, 
-                 ${midX} ${y2 - curveHeight}, 
-                 ${x2} ${y2}`;
+    // Calculate line properties
+    const length = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+    const angle = Math.atan2(endY - startY, endX - startX) * 180 / Math.PI;
     
-    line.setAttribute('d', d);
-    line.setAttribute('class', 'connection-line');
-    line.setAttribute('data-pair', `${questionId}-${answerIndex}`);
+    // Set line position and rotation
+    connectionLine.style.width = `${length}px`;
+    connectionLine.style.left = `${startX}px`;
+    connectionLine.style.top = `${startY}px`;
+    connectionLine.style.transform = `rotate(${angle}deg)`;
     
-    svg.appendChild(line);
+    // Add to game container
+    if (!document.querySelector('.connection-visual')) {
+        const visualContainer = document.createElement('div');
+        visualContainer.className = 'connection-visual';
+        document.getElementById('love-match-game').appendChild(visualContainer);
+    }
+    
+    document.querySelector('.connection-visual').appendChild(connectionLine);
     
     // Store connection
-    connectGameState.connections.push({
+    matchGameState.connections.push({
         questionId: questionId,
         answerIndex: answerIndex,
-        element: line
+        element: connectionLine
     });
     
     // After animation, make it glow
     setTimeout(() => {
-        line.classList.add('completed');
-    }, 1500);
+        connectionLine.classList.add('completed');
+    }, 300);
 }
 
-function showRomanticReveal(message, questionId) {
+function showRomanticReveal(message, icon) {
     const popup = document.getElementById('romantic-reveal-popup');
     const messageElement = document.getElementById('reveal-message');
     const iconElement = document.getElementById('reveal-icon');
     
-    // Set message
+    // Set message and icon
     messageElement.textContent = message;
-    
-    // Set icon based on question
-    iconElement.textContent = getQuestionIcon(questionId) || '💖';
+    iconElement.textContent = icon || '💖';
     
     // Show popup
     popup.classList.add('active');
@@ -1319,8 +1346,8 @@ function hideHint() {
 }
 
 function updateProgress() {
-    const connected = connectGameState.completedPairs.length;
-    const total = loveStoryConnectData.length;
+    const connected = matchGameState.completedPairs.length;
+    const total = loveStoryMatchData.length;
     const percent = (connected / total) * 100;
     
     // Update counter
@@ -1330,38 +1357,49 @@ function updateProgress() {
     updateLoveBar('love-fill-4', 'love-percent-4', percent);
 }
 
-function updateNumberButton(questionId, state) {
-    const button = document.querySelector(`.number-btn:nth-child(${questionId})`);
-    if (button) {
-        button.className = 'number-btn';
+function updateQuestionItem(questionId, state) {
+    const item = document.querySelector(`.question-item[data-id="${questionId}"]`);
+    if (item) {
+        item.className = 'match-item question-item';
         if (state === 'completed') {
-            button.classList.add('completed');
+            item.classList.add('completed');
+            // Update text
+            const textElement = item.querySelector('.question-text');
+            if (textElement) {
+                textElement.innerHTML = `
+                    <span class="question-icon">${loveStoryMatchData.find(q => q.id === questionId).icon}</span>
+                    Completed!
+                `;
+            }
         }
     }
 }
 
-function updateLetterButton(answerIndex, state) {
-    const button = document.querySelector(`.letter-btn:nth-child(${answerIndex + 1})`);
-    if (button) {
-        button.className = 'letter-btn';
+function updateAnswerItem(answerIndex, state) {
+    const item = document.querySelector(`.answer-item[data-index="${answerIndex}"]`);
+    if (item) {
+        item.className = 'match-item answer-item';
         if (state === 'completed') {
-            button.classList.add('completed');
+            item.classList.add('completed');
         }
     }
 }
 
 function clearQuestionDisplay() {
-    document.getElementById('question-icon').textContent = '💭';
-    document.getElementById('question-text').textContent = 'Click a number to see a memory question';
+    document.getElementById('current-question-text').textContent = 'Click a question number to begin';
+    document.querySelector('.question-icon').textContent = '💭';
+    document.getElementById('question-hint').textContent = '';
 }
 
 function clearConnections() {
-    const svg = document.getElementById('connection-lines');
-    svg.innerHTML = '';
+    const visualContainer = document.querySelector('.connection-visual');
+    if (visualContainer) {
+        visualContainer.remove();
+    }
 }
 
-function resetConnectGame() {
-    setupConnectGame();
+function resetMatchGame() {
+    initializeMatchGame();
 }
 
 // Helper functions
@@ -1373,16 +1411,9 @@ function shuffleArray(array) {
     return array;
 }
 
-function getQuestionIcon(questionId) {
-    const icons = ['🎯', '💖', '✈️', '😂', '🛋️', '👶', '💝', '❓'];
-    return icons[questionId - 1] || '💖';
-}
-
-// Initialize when page loads
-function initializeConnectGame() {
-    setupConnectGame();
-}
-
+// Make functions available globally
+window.resetMatchGame = resetMatchGame;
+window.closeReveal = closeReveal;
 // ======================
 // MUSIC PLAYER
 // ======================
