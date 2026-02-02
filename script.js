@@ -1011,23 +1011,131 @@ function resetMatchGame() {
 }
 
 // ======================
-// VIDEO FUNCTION
+// VIDEO FUNCTIONS (Manual Play)
 // ======================
 
-function playVideo() {
-    const video = document.getElementById('nostalgic-video');
-    const overlay = document.querySelector('.video-play-overlay');
+function playVideoManually() {
+    console.log("🎬 Attempting to play video manually...");
     
+    const video = document.getElementById('nostalgic-video');
+    const placeholder = document.getElementById('video-placeholder');
+    const statusDiv = document.getElementById('video-status');
+    const errorDiv = document.getElementById('video-error');
+    
+    // Hide any previous error
+    if (errorDiv) errorDiv.style.display = 'none';
+    
+    // Show loading status
+    if (statusDiv) statusDiv.style.display = 'block';
+    
+    // Hide placeholder
+    if (placeholder) placeholder.style.display = 'none';
+    
+    // Show video element
     if (video) {
-        video.play().then(() => {
-            console.log("🎬 Video playing...");
-            if (overlay) overlay.style.display = 'none';
-        }).catch(error => {
-            console.error("Video error:", error);
-            showToast("⚠️ Make sure 'our-dance.mp4' is in videos/ folder");
-        });
+        video.style.display = 'block';
+        video.classList.add('playing');
+        
+        // Set video source (in case it wasn't loaded)
+        if (!video.src || video.src === '') {
+            video.src = 'videos/our-dance.mp4';
+        }
+        
+        // Try to play
+        const playPromise = video.play();
+        
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                console.log("✅ Video playing successfully!");
+                if (statusDiv) statusDiv.style.display = 'none';
+            }).catch(error => {
+                console.error("❌ Video play failed:", error);
+                
+                // Show error message
+                if (errorDiv) {
+                    errorDiv.style.display = 'block';
+                    if (placeholder) placeholder.style.display = 'flex';
+                    video.style.display = 'none';
+                }
+                
+                if (statusDiv) statusDiv.style.display = 'none';
+                
+                // Show specific error message
+                let errorMsg = "Video failed to play.";
+                if (error.name === 'NotAllowedError') {
+                    errorMsg = "Browser blocked playback. Click the play button on the video.";
+                } else if (error.name === 'NotFoundError') {
+                    errorMsg = "Video file not found. Check videos/our-dance.mp4";
+                }
+                
+                if (errorDiv.querySelector('span')) {
+                    errorDiv.querySelector('span').textContent = errorMsg;
+                }
+            });
+        }
     }
 }
+
+function retryVideo() {
+    const video = document.getElementById('nostalgic-video');
+    const placeholder = document.getElementById('video-placeholder');
+    const errorDiv = document.getElementById('video-error');
+    
+    // Reset everything
+    if (errorDiv) errorDiv.style.display = 'none';
+    if (placeholder) placeholder.style.display = 'flex';
+    if (video) {
+        video.style.display = 'none';
+        video.classList.remove('playing');
+        video.src = 'videos/our-dance.mp4';
+        video.load(); // Reload the video
+    }
+    
+    console.log("🔄 Retrying video...");
+}
+
+// Initialize video when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    const video = document.getElementById('nostalgic-video');
+    
+    if (video) {
+        // Preload the video (but don't autoplay)
+        video.preload = 'metadata';
+        video.src = 'videos/our-dance.mp4';
+        
+        // Listen for video errors
+        video.addEventListener('error', function(e) {
+            console.error("Video error:", video.error);
+            
+            const errorDiv = document.getElementById('video-error');
+            const placeholder = document.getElementById('video-placeholder');
+            
+            if (errorDiv) {
+                errorDiv.style.display = 'block';
+                if (video.error && video.error.code === 4) {
+                    errorDiv.querySelector('span').textContent = "Video file not found or invalid.";
+                }
+            }
+            
+            if (placeholder) placeholder.style.display = 'flex';
+            video.style.display = 'none';
+        });
+        
+        // When video ends, show placeholder again
+        video.addEventListener('ended', function() {
+            const placeholder = document.getElementById('video-placeholder');
+            if (placeholder) {
+                placeholder.style.display = 'flex';
+                video.style.display = 'none';
+                video.classList.remove('playing');
+            }
+        });
+    }
+});
+
+// Expose function to global scope
+window.playVideoManually = playVideoManually;
+window.retryVideo = retryVideo;
 
 // ======================
 // UTILITY FUNCTIONS
