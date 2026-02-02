@@ -1,7 +1,6 @@
 /* ============================================
    VALENTINE SURPRISE - COMPLETE JAVASCRIPT
-   FIXED: MAZE GAME NOW WORKING WITH CANVAS
-   FIXED: VIDEO PLAYER WITH ERROR HANDLING
+   GAME 2: LOVE SCRAMBLE (replaces Maze)
    ============================================ */
 
 console.log("💝 Valentine Surprise Started!");
@@ -30,46 +29,19 @@ const compliments = [
     "I fall for you more every day!"
 ];
 
-// Game 2: MAZE - COMPLETELY REWRITTEN
-let mazeGame = {
-    canvas: null,
-    ctx: null,
-    player: { x: 30, y: 30, size: 40 },
-    endPoint: { x: 560, y: 420, size: 50 },
-    walls: [],
-    speed: 8,
-    completed: false,
-    keys: {}
+// Game 2: LOVE SCRAMBLE
+let scrambleGame = {
+    originalSentence: [
+        "Under", "the", "moon", "I", "want", "to", "trace", "every", 
+        "curve", "of", "your", "body", "with", "my", "lips", "until", 
+        "you", "whisper", "my", "name", "breathlessly"
+    ],
+    scrambledWords: [],
+    selectedWords: [],
+    hintUsed: false,
+    startTime: null,
+    timerInterval: null
 };
-
-// Maze walls definition (simplified for testing)
-mazeGame.walls = [
-    // Outer walls
-    { x: 0, y: 0, width: 650, height: 20 },
-    { x: 0, y: 0, width: 20, height: 500 },
-    { x: 630, y: 0, width: 20, height: 500 },
-    { x: 0, y: 480, width: 650, height: 20 },
-    
-    // Inner walls - SIMPLIFIED FOR TESTING
-    { x: 100, y: 0, width: 20, height: 120 },
-    { x: 100, y: 100, width: 150, height: 20 },
-    { x: 250, y: 100, width: 20, height: 150 },
-    { x: 400, y: 0, width: 20, height: 200 },
-    { x: 400, y: 200, width: 150, height: 20 },
-    { x: 50, y: 200, width: 20, height: 150 },
-    { x: 50, y: 350, width: 150, height: 20 },
-    { x: 200, y: 250, width: 20, height: 150 },
-    { x: 350, y: 300, width: 20, height: 150 },
-    { x: 500, y: 250, width: 20, height: 150 },
-    
-    // Path obstacles
-    { x: 300, y: 400, width: 150, height: 20 },
-    { x: 450, y: 350, width: 20, height: 100 },
-    
-    // Final path to end
-    { x: 550, y: 100, width: 20, height: 200 },
-    { x: 450, y: 100, width: 120, height: 20 }
-];
 
 // Game 3: Riddles
 let currentRiddle = 0;
@@ -118,10 +90,76 @@ const riddles = [
         ],
         correct: [0, 1],
         hint: "It's a good thing!"
+    },
+    {
+        section: "Romantic",
+        question: "What should be our secret code for 'I want you'?",
+        options: [
+            "Have you seen my socks? 🧦",
+            "I'm feeling... adventurous 😈",
+            "The moon looks beautiful tonight 🌝"
+        ],
+        correct: [1, 2],
+        hint: "Too easy"
+    },
+    {
+        section: "Naughty/Adult Teasing",
+        question: "What's my favorite kind of workout?",
+        options: [
+            "The kind where we're both breathless 😮💨",
+            "Late night cardio in bed 🛏️",
+            "Doing laundry 💪"
+        ],
+        correct: [0, 1],
+        hint: "Somewhere cozy..."
+    },
+    {
+        section: "Naughty/Adult Teasing",
+        question: "What's the most delicious thing I've ever tasted?",
+        options: [
+            "Apple Pie 🍑",
+            "The nape of your neck 😘",
+            "Store-bought cookies 🍪"
+        ],
+        correct: [0, 1],
+        hint: "Definitely not cookies!"
+    },
+    {
+        section: "Naughty/Adult Teasing",
+        question: "What's the secret ingredient in our recipe for love?",
+        options: [
+            "Spice and everything nice 🌶️",
+            "Late nights and soft whispers 🌙",
+            "Boring routines ⏰"
+        ],
+        correct: [0, 1],
+        hint: "Nothing boring about us!"
+    },
+    {
+        section: "Naughty/Adult Teasing",
+        question: "What's the game I'd never get tired of playing?",
+        options: [
+            "How many kisses before sunrise? 🌅",
+            "Guess where I'm touching 👆",
+            "Solitaire"
+        ],
+        correct: [0, 1],
+        hint: "We're definitely exciting!"
+    },
+    {
+        section: "Naughty/Adult Teasing",
+        question: "What's the game I always want to play with you?",
+        options: [
+            "Hide and seek under covers 🙈",
+            "Staring contest that ends with kisses 👄",
+            "Monopoly (and argue about rules) 🎲"
+        ],
+        correct: [0, 1],
+        hint: "It's more fun than board games!"
     }
 ];
 
-// Game 4: Memory (same as before)
+// Game 4: Memory
 const loveStoryMatchData = [
     {   id: 1,
         question: "🎯 What do I remember as our first meeting?",
@@ -137,6 +175,54 @@ const loveStoryMatchData = [
         reveal: "Watching you enjoy that food... I was already falling",
         hint: "Remember our first restaurant date?",
         image: "images/memory2.jpg"
+    },
+    {
+        id: 3,
+        question: "First trip?",
+        answer: "✈️ Kasauli trip",
+        reveal: "Tried to... you know 😂😂..... Adventures with you are always unforgettable!",
+        hint: "Our first trip together had some firsts...",
+        image: "images/memory3.jpg"
+    },
+    {
+        id: 4,
+        question: "our inside joke?",
+        answer: "Krishna had fever, and in bukhar halat mein... bhi nahi baksha! 🤒",
+        reveal: "Our laughs are my favorite soundtrack",
+        hint: "Our funniest inside joke about being stubborn",
+        image: "images/memory4.jpg"
+    },
+    {
+        id: 5,
+        question: "🛋️ What's my favorite cuddle spot?",
+        answer: "Anywhere with you 🥰",
+        reveal: "All spots are magical when you're in my arms",
+        hint: "It's not about the place, but the company",
+        image: "images/memory5.jpg"
+    },
+    {
+        id: 6,
+        question: "How our future looks like?",
+        answer: "👶 One day we'll marry and have kids",
+        reveal: "then...My son will take revenge from you! 😈. Can't wait for our chaotic, beautiful future",
+        hint: "Our playful future parenting plans",
+        image: "images/memory6.jpg"
+    },
+    {
+        id: 7,
+        question: "💝 Why do I love you the most?",
+        answer: "Because you're MINE 👑",
+        reveal: "You're my everything, always and forever",
+        hint: "It's a possessive but loving reason",
+        image: "images/memory7.jpg"
+    },
+    {
+        id: 8,
+        question: "❓ What's your most memorable moment?",
+        answer: "Tosh trip ❄️",
+        reveal: "Snow and you are the most deadly combination! ⛄",
+        hint: "Think about our most adventurous trip",
+        image: "images/memory8.jpg"
     }
 ];
 
@@ -161,7 +247,7 @@ function goToPage(pageNumber) {
     
     // Stop any running games
     stopGame1();
-    stopMazeGame();
+    stopScrambleTimer();
     
     // Hide all pages
     const allPages = document.querySelectorAll('.page');
@@ -198,9 +284,9 @@ function initializePage(pageNumber) {
         case 5: // Transition 2
             startAutoTransition(8, 6, 'countdown2');
             break;
-        case 7: // Game 2 - MAZE (COMPLETELY NEW)
+        case 7: // GAME 2 - LOVE SCRAMBLE
             setTimeout(() => {
-                setupMazeGame();
+                setupScrambleGame();
             }, 100);
             break;
         case 8: // Transition 3
@@ -256,217 +342,230 @@ function clearAllAutoTimers() {
 }
 
 // ======================
-// GAME 2: MAZE - COMPLETELY REWRITTEN WITH CANVAS
+// GAME 2: LOVE SCRAMBLE
 // ======================
 
-function setupMazeGame() {
-    console.log("🚀 Setting up MAZE GAME with Canvas...");
+function setupScrambleGame() {
+    console.log("🔤 Setting up Love Scramble Game...");
     
-    mazeGame.canvas = document.getElementById('maze-canvas');
-    if (!mazeGame.canvas) {
-        console.error("Maze canvas not found!");
+    // Reset game state
+    scrambleGame.selectedWords = [];
+    scrambleGame.hintUsed = false;
+    scrambleGame.startTime = new Date();
+    
+    // Create shuffled copy of words
+    scrambleGame.scrambledWords = [...scrambleGame.originalSentence];
+    shuffleArray(scrambleGame.scrambledWords);
+    
+    // Clear previous display
+    const scrambleArea = document.getElementById('scramble-area');
+    const sentenceArea = document.getElementById('sentence-area');
+    
+    if (scrambleArea && sentenceArea) {
+        scrambleArea.innerHTML = '';
+        sentenceArea.innerHTML = '<p id="empty-message">Click words below to build the sentence...</p>';
+        
+        // Create word tiles
+        scrambleGame.scrambledWords.forEach((word, index) => {
+            const wordTile = document.createElement('div');
+            wordTile.className = 'word-tile';
+            wordTile.textContent = word;
+            wordTile.dataset.index = index;
+            wordTile.onclick = () => selectWord(word, index);
+            scrambleArea.appendChild(wordTile);
+        });
+        
+        // Update stats
+        updateScrambleStats();
+        
+        // Start timer
+        startScrambleTimer();
+        
+        // Reset success message
+        const successMsg = document.getElementById('success-message');
+        if (successMsg) successMsg.style.display = 'none';
+        
+        // Enable buttons
+        const hintBtn = document.getElementById('hint-btn');
+        const checkBtn = document.getElementById('check-btn');
+        if (hintBtn) hintBtn.disabled = false;
+        if (checkBtn) checkBtn.disabled = false;
+        
+        console.log("✅ Love Scramble ready! 20 words to arrange.");
+    }
+}
+
+function selectWord(word, originalIndex) {
+    // Check if word is already used
+    const wordTile = document.querySelector(`.word-tile[data-index="${originalIndex}"]`);
+    if (wordTile.classList.contains('used')) {
+        return; // Word already used
+    }
+    
+    // Add to selected words
+    scrambleGame.selectedWords.push(word);
+    
+    // Mark word as used
+    wordTile.classList.add('used');
+    wordTile.classList.remove('selected');
+    
+    // Update sentence area
+    const sentenceArea = document.getElementById('sentence-area');
+    const emptyMessage = document.getElementById('empty-message');
+    
+    if (emptyMessage) emptyMessage.remove();
+    
+    const sentenceWord = document.createElement('div');
+    sentenceWord.className = 'sentence-word';
+    sentenceWord.textContent = word;
+    sentenceWord.style.animation = 'wordAppear 0.5s ease';
+    sentenceArea.appendChild(sentenceWord);
+    
+    // Update stats
+    updateScrambleStats();
+    
+    // Scroll to show new word
+    sentenceWord.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function updateScrambleStats() {
+    const placedCount = document.getElementById('placed-count');
+    const wordCount = document.getElementById('word-count');
+    const hintStatus = document.getElementById('hint-status');
+    const progress = (scrambleGame.selectedWords.length / scrambleGame.originalSentence.length) * 100;
+    
+    if (placedCount) placedCount.textContent = scrambleGame.selectedWords.length;
+    if (wordCount) wordCount.textContent = `${scrambleGame.selectedWords.length}/20`;
+    if (hintStatus) hintStatus.textContent = scrambleGame.hintUsed ? '❌ Used' : '🌙 Available';
+    
+    // Update progress bar
+    updateLoveBar('love-fill-2', 'love-percent-2', progress);
+}
+
+function startScrambleTimer() {
+    stopScrambleTimer();
+    
+    scrambleGame.timerInterval = setInterval(() => {
+        const now = new Date();
+        const elapsed = Math.floor((now - scrambleGame.startTime) / 1000);
+        const minutes = Math.floor(elapsed / 60);
+        const seconds = elapsed % 60;
+        
+        const timerElement = document.getElementById('scramble-timer');
+        if (timerElement) {
+            timerElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+    }, 1000);
+}
+
+function stopScrambleTimer() {
+    if (scrambleGame.timerInterval) {
+        clearInterval(scrambleGame.timerInterval);
+        scrambleGame.timerInterval = null;
+    }
+}
+
+function useHint() {
+    if (scrambleGame.hintUsed) {
+        showToast("You've already used your moonlight hint! 🌙");
         return;
     }
     
-    mazeGame.ctx = mazeGame.canvas.getContext('2d');
-    mazeGame.completed = false;
-    mazeGame.player = { x: 30, y: 30, size: 40 };
-    mazeGame.keys = {};
+    scrambleGame.hintUsed = true;
     
-    // Setup keyboard controls
-    setupMazeControls();
+    // Show first 3 words in correct order
+    const hintWords = scrambleGame.originalSentence.slice(0, 3);
+    showToast(`Moonlight hint: Start with "${hintWords.join(' ')}..." 🌙`);
     
-    // Draw initial maze
-    drawMaze();
+    // Update hint status
+    updateScrambleStats();
     
-    // Start game loop
-    requestAnimationFrame(gameLoop);
-    
-    console.log("✅ Maze game ready! Use arrow keys or WASD");
-}
-
-function setupMazeControls() {
-    // Clear previous listeners
-    window.removeEventListener('keydown', handleMazeKeyDown);
-    window.removeEventListener('keyup', handleMazeKeyUp);
-    
-    // Add new listeners
-    window.addEventListener('keydown', handleMazeKeyDown);
-    window.addEventListener('keyup', handleMazeKeyUp);
-}
-
-function handleMazeKeyDown(e) {
-    if (mazeGame.completed) return;
-    
-    const key = e.key.toLowerCase();
-    mazeGame.keys[key] = true;
-    
-    // Prevent arrow keys from scrolling page
-    if (['arrowup', 'arrowdown', 'arrowleft', 'arrowright', 'w', 'a', 's', 'd'].includes(key)) {
-        e.preventDefault();
+    // Disable hint button
+    const hintBtn = document.getElementById('hint-btn');
+    if (hintBtn) {
+        hintBtn.disabled = true;
+        hintBtn.innerHTML = '<i class="fas fa-moon"></i> Hint Used';
     }
 }
 
-function handleMazeKeyUp(e) {
-    const key = e.key.toLowerCase();
-    mazeGame.keys[key] = false;
-}
-
-function drawMaze() {
-    const ctx = mazeGame.ctx;
-    const canvas = mazeGame.canvas;
+function checkScramble() {
+    // Check if all words are placed
+    if (scrambleGame.selectedWords.length !== scrambleGame.originalSentence.length) {
+        showToast(`Place all ${scrambleGame.originalSentence.length} words first! ❤️`);
+        return;
+    }
     
-    // Clear canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Check if sentence is correct
+    const isCorrect = scrambleGame.selectedWords.join(' ') === scrambleGame.originalSentence.join(' ');
     
-    // Draw background
-    ctx.fillStyle = '#f8f9fa';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
-    // Draw walls
-    ctx.fillStyle = '#6a5acd';
-    mazeGame.walls.forEach(wall => {
-        ctx.fillRect(wall.x, wall.y, wall.width, wall.height);
+    if (isCorrect) {
+        // SUCCESS!
+        stopScrambleTimer();
         
-        // Add shadow effect
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
-        ctx.fillRect(wall.x + 2, wall.y + 2, wall.width - 4, wall.height - 4);
-        ctx.fillStyle = '#6a5acd';
-    });
-    
-    // Draw end point (green heart)
-    ctx.fillStyle = '#2ecc71';
-    ctx.beginPath();
-    ctx.arc(mazeGame.endPoint.x, mazeGame.endPoint.y, mazeGame.endPoint.size/2, 0, Math.PI * 2);
-    ctx.fill();
-    
-    // Add heart icon to end point
-    ctx.font = '30px Arial';
-    ctx.fillStyle = 'white';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('💚', mazeGame.endPoint.x, mazeGame.endPoint.y);
-    
-    // Draw player (pink heart)
-    ctx.fillStyle = '#e74c89';
-    ctx.beginPath();
-    ctx.arc(mazeGame.player.x, mazeGame.player.y, mazeGame.player.size/2, 0, Math.PI * 2);
-    ctx.fill();
-    
-    // Add heart icon to player
-    ctx.font = '25px Arial';
-    ctx.fillStyle = 'white';
-    ctx.fillText('❤️', mazeGame.player.x, mazeGame.player.y);
-    
-    // Add player shadow
-    ctx.shadowColor = 'rgba(231, 76, 137, 0.6)';
-    ctx.shadowBlur = 15;
-    ctx.shadowOffsetX = 0;
-    ctx.shadowOffsetY = 0;
-    ctx.fill();
-    ctx.shadowBlur = 0;
-}
-
-function gameLoop() {
-    if (mazeGame.completed) return;
-    
-    updatePlayerPosition();
-    drawMaze();
-    checkWinCondition();
-    
-    requestAnimationFrame(gameLoop);
-}
-
-function updatePlayerPosition() {
-    let newX = mazeGame.player.x;
-    let newY = mazeGame.player.y;
-    
-    // Check pressed keys
-    if (mazeGame.keys['arrowup'] || mazeGame.keys['w']) newY -= mazeGame.speed;
-    if (mazeGame.keys['arrowdown'] || mazeGame.keys['s']) newY += mazeGame.speed;
-    if (mazeGame.keys['arrowleft'] || mazeGame.keys['a']) newX -= mazeGame.speed;
-    if (mazeGame.keys['arrowright'] || mazeGame.keys['d']) newX += mazeGame.speed;
-    
-    // Check collision before moving
-    if (!checkCollision(newX, newY)) {
-        mazeGame.player.x = newX;
-        mazeGame.player.y = newY;
-    }
-}
-
-function checkCollision(x, y) {
-    const playerSize = mazeGame.player.size;
-    
-    // Check boundary collision
-    if (x - playerSize/2 < 20 || 
-        x + playerSize/2 > mazeGame.canvas.width - 20 ||
-        y - playerSize/2 < 20 || 
-        y + playerSize/2 > mazeGame.canvas.height - 20) {
-        return true;
-    }
-    
-    // Check wall collision
-    for (const wall of mazeGame.walls) {
-        if (x + playerSize/2 > wall.x &&
-            x - playerSize/2 < wall.x + wall.width &&
-            y + playerSize/2 > wall.y &&
-            y - playerSize/2 < wall.y + wall.height) {
-            return true;
+        // Calculate time taken
+        const endTime = new Date();
+        const timeTaken = Math.floor((endTime - scrambleGame.startTime) / 1000);
+        const minutes = Math.floor(timeTaken / 60);
+        const seconds = timeTaken % 60;
+        
+        // Show success message
+        const successMsg = document.getElementById('success-message');
+        const revealedSentence = document.getElementById('revealed-sentence');
+        
+        if (successMsg && revealedSentence) {
+            revealedSentence.innerHTML = `
+                <div style="font-size: 1.5rem; color: #e74c89; font-style: italic; margin: 20px 0; padding: 20px; background: rgba(255, 255, 255, 0.9); border-radius: 15px; border: 2px solid #ffccd5;">
+                    "${scrambleGame.originalSentence.join(' ')}"
+                </div>
+                <p>You decoded my desire in ${minutes}:${seconds.toString().padStart(2, '0')}! 🎯</p>
+                <p style="font-style: italic; color: #666;">That's exactly what I dream about under the moonlight...</p>
+            `;
+            successMsg.style.display = 'block';
+            
+            // Scroll to success message
+            setTimeout(() => {
+                successMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 500);
+        }
+        
+        // Disable game buttons
+        const hintBtn = document.getElementById('hint-btn');
+        const checkBtn = document.getElementById('check-btn');
+        if (hintBtn) hintBtn.disabled = true;
+        if (checkBtn) checkBtn.disabled = true;
+        
+        // Add success animation
+        document.querySelector('.page-content').classList.add('success-flash');
+        setTimeout(() => {
+            document.querySelector('.page-content').classList.remove('success-flash');
+        }, 500);
+        
+        console.log("✅ Love Scramble completed successfully!");
+        
+    } else {
+        // WRONG - gentle feedback
+        showToast("Not quite right... Try rearranging the words! 💭");
+        
+        // Shake the sentence area
+        const sentenceArea = document.getElementById('sentence-area');
+        if (sentenceArea) {
+            sentenceArea.style.animation = 'shake 0.5s ease';
+            setTimeout(() => {
+                sentenceArea.style.animation = '';
+            }, 500);
         }
     }
-    
-    return false;
 }
 
-function checkWinCondition() {
-    const player = mazeGame.player;
-    const end = mazeGame.endPoint;
-    
-    // Calculate distance between player and end point
-    const dx = player.x - end.x;
-    const dy = player.y - end.y;
-    const distance = Math.sqrt(dx * dx + dy * dy);
-    
-    // If player reaches end point
-    if (distance < (player.size/2 + end.size/2)) {
-        mazeGame.completed = true;
-        
-        // Flash effect
-        let flashCount = 0;
-        const flashInterval = setInterval(() => {
-            mazeGame.canvas.style.backgroundColor = flashCount % 2 === 0 ? '#2ecc71' : '#f8f9fa';
-            flashCount++;
-            
-            if (flashCount > 6) {
-                clearInterval(flashInterval);
-                mazeGame.canvas.style.backgroundColor = '#f8f9fa';
-                
-                // Show success message
-                setTimeout(() => {
-                    showToast('🎉 You found your way to my heart! ❤️');
-                    setTimeout(() => goToPage(8), 1500);
-                }, 500);
-            }
-        }, 100);
+function resetScramble() {
+    if (confirm("Start over? Your current progress will be lost.")) {
+        setupScrambleGame();
+        showToast("Scrambled words reset! Try again 🌙");
     }
-}
-
-function stopMazeGame() {
-    mazeGame.completed = true;
-    window.removeEventListener('keydown', handleMazeKeyDown);
-    window.removeEventListener('keyup', handleMazeKeyUp);
-}
-
-function resetMaze() {
-    console.log("🔄 Resetting maze...");
-    stopMazeGame();
-    setTimeout(() => {
-        setupMazeGame();
-    }, 100);
 }
 
 // ======================
-// GAME 1: TAP HEARTS (unchanged)
+// GAME 1: TAP HEARTS (Unchanged)
 // ======================
 
 function setupGame1() {
@@ -592,7 +691,327 @@ function stopGame1() {
 }
 
 // ======================
-// VIDEO PLAYER FUNCTION
+// GAME 3: RIDDLES (Unchanged)
+// ======================
+
+function setupRiddles() {
+    currentRiddle = 0;
+    riddleScore = 0;
+    updateLoveBar('love-fill-3', 'love-percent-3', 0);
+    showRiddle();
+}
+
+function showRiddle() {
+    if (currentRiddle >= riddles.length) {
+        setTimeout(() => {
+            goToPage(19);
+        }, 1500);
+        return;
+    }
+    
+    const riddle = riddles[currentRiddle];
+    document.getElementById('riddle-text').textContent = riddle.question;
+    document.getElementById('riddle-number').textContent = currentRiddle + 1;
+    
+    const optionsContainer = document.getElementById('options-container');
+    optionsContainer.innerHTML = '';
+    
+    riddle.options.forEach((option, index) => {
+        const button = document.createElement('button');
+        button.className = 'option-btn';
+        button.setAttribute('data-option', ['A', 'B', 'C'][index]);
+        button.innerHTML = option;
+        button.onclick = () => checkRiddleAnswer(index);
+        optionsContainer.appendChild(button);
+    });
+}
+
+function checkRiddleAnswer(selectedIndex) {
+    const riddle = riddles[currentRiddle];
+    const buttons = document.querySelectorAll('.option-btn');
+    
+    buttons.forEach(btn => {
+        btn.style.pointerEvents = 'none';
+    });
+    
+    buttons.forEach((btn, index) => {
+        if (riddle.correct.includes(index)) {
+            btn.classList.add('correct');
+        } else if (index === selectedIndex && !riddle.correct.includes(index)) {
+            btn.classList.add('wrong');
+        }
+    });
+    
+    if (riddle.correct.includes(selectedIndex)) {
+        riddleScore++;
+        const percent = (riddleScore / riddles.length) * 100;
+        updateLoveBar('love-fill-3', 'love-percent-3', percent);
+        
+        setTimeout(() => {
+            currentRiddle++;
+            showRiddle();
+        }, 1500);
+    } else {
+        setTimeout(() => {
+            buttons.forEach(btn => {
+                btn.classList.remove('wrong');
+                btn.style.pointerEvents = 'auto';
+            });
+            
+            buttons.forEach((btn, index) => {
+                if (riddle.correct.includes(index)) {
+                    btn.classList.add('correct');
+                }
+            });
+        }, 2000);
+    }
+}
+
+function showHint() {
+    const riddle = riddles[currentRiddle];
+    const hintBtn = document.getElementById('hint-btn');
+    
+    if (hintBtn && riddle) {
+        hintBtn.innerHTML = `Hint: ${riddle.hint} <i class="fas fa-lightbulb"></i>`;
+        hintBtn.style.pointerEvents = 'none';
+        
+        setTimeout(() => {
+            hintBtn.innerHTML = `Need a hint? <i class="fas fa-lightbulb"></i>`;
+            hintBtn.style.pointerEvents = 'auto';
+        }, 5000);
+    }
+}
+
+// ======================
+// GAME 4: LOVE STORY MATCH (Unchanged)
+// ======================
+
+function initializeMatchGame() {
+    matchGameState = {
+        selectedQuestion: null,
+        completedPairs: [],
+        wrongAttempts: {},
+        shuffledAnswers: []
+    };
+    
+    const answers = loveStoryMatchData.map(item => item.answer);
+    matchGameState.shuffledAnswers = shuffleArray([...answers]);
+    
+    renderQuestions();
+    renderAnswers();
+    updateProgress();
+    clearQuestionDisplay();
+    hideHint();
+    
+    document.getElementById('match-next-btn').style.display = 'none';
+}
+
+function renderQuestions() {
+    const container = document.getElementById('question-items');
+    container.innerHTML = '';
+    
+    loveStoryMatchData.forEach(item => {
+        const questionItem = document.createElement('div');
+        questionItem.className = 'match-item question-item';
+        
+        if (matchGameState.completedPairs.includes(item.id)) {
+            questionItem.classList.add('completed');
+        }
+        
+        questionItem.dataset.id = item.id;
+        questionItem.onclick = () => selectQuestion(item.id);
+        
+        questionItem.innerHTML = `
+            <div class="question-number">${item.id}</div>
+            <div class="question-text">
+                ${matchGameState.completedPairs.includes(item.id) ? '✓ Matched!' : 'Click to select'}
+            </div>
+        `;
+        
+        container.appendChild(questionItem);
+    });
+}
+
+function renderAnswers() {
+    const container = document.getElementById('answer-items');
+    container.innerHTML = '';
+    
+    const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+    
+    matchGameState.shuffledAnswers.forEach((answer, index) => {
+        const answerItem = document.createElement('div');
+        answerItem.className = 'match-item answer-item';
+        answerItem.dataset.index = index;
+        answerItem.onclick = () => selectAnswer(index);
+        
+        const completedItem = loveStoryMatchData.find(item => 
+            matchGameState.completedPairs.includes(item.id) && 
+            matchGameState.shuffledAnswers[index] === item.answer
+        );
+        
+        if (completedItem) {
+            answerItem.classList.add('completed');
+        }
+        
+        answerItem.innerHTML = `
+            <div class="answer-letter">${letters[index]}</div>
+            <div class="answer-text">${answer}</div>
+        `;
+        
+        container.appendChild(answerItem);
+    });
+}
+
+function selectQuestion(questionId) {
+    if (matchGameState.completedPairs.includes(questionId)) return;
+    
+    matchGameState.selectedQuestion = questionId;
+    
+    document.querySelectorAll('.question-item').forEach(item => {
+        item.classList.remove('selected');
+    });
+    
+    const selectedItem = document.querySelector(`.question-item[data-id="${questionId}"]`);
+    if (selectedItem) {
+        selectedItem.classList.add('selected');
+    }
+    
+    const questionData = loveStoryMatchData.find(item => item.id === questionId);
+    if (questionData) {
+        document.getElementById('current-question-text').textContent = questionData.question;
+        
+        const pictureElement = document.getElementById('memory-picture');
+        const placeholderElement = document.getElementById('picture-placeholder');
+        const captionElement = document.getElementById('picture-caption');
+        
+        if (questionData.image) {
+            pictureElement.src = questionData.image;
+            pictureElement.classList.add('active');
+            placeholderElement.style.display = 'none';
+            captionElement.textContent = "This beautiful memory 💖";
+            captionElement.classList.add('active');
+        }
+    }
+}
+
+function selectAnswer(answerIndex) {
+    if (!matchGameState.selectedQuestion) {
+        showHint("First select a question number from the left!");
+        return;
+    }
+    
+    const questionId = matchGameState.selectedQuestion;
+    const questionData = loveStoryMatchData.find(item => item.id === questionId);
+    const selectedAnswer = matchGameState.shuffledAnswers[answerIndex];
+    
+    const answerItems = document.querySelectorAll('.answer-item');
+    const selectedAnswerItem = answerItems[answerIndex];
+    
+    if (questionData.answer === selectedAnswer) {
+        if (!matchGameState.completedPairs.includes(questionId)) {
+            matchGameState.completedPairs.push(questionId);
+        }
+        
+        updateQuestionItem(questionId, 'completed');
+        updateAnswerItem(answerIndex, 'completed');
+        
+        showRomanticReveal(questionData.reveal, '💖');
+        updateProgress();
+        
+        matchGameState.selectedQuestion = null;
+        clearQuestionDisplay();
+        
+        if (matchGameState.completedPairs.length === loveStoryMatchData.length) {
+            setTimeout(() => {
+                document.getElementById('match-next-btn').style.display = 'inline-block';
+                showRomanticReveal("🎉 Perfect! You've matched all our beautiful memories! ❤️", '💖');
+            }, 1000);
+        }
+        
+    } else {
+        selectedAnswerItem.classList.add('wrong');
+        
+        setTimeout(() => {
+            selectedAnswerItem.classList.remove('wrong');
+        }, 1000);
+    }
+}
+
+function showRomanticReveal(message, icon) {
+    const popup = document.getElementById('romantic-reveal-popup');
+    const messageElement = document.getElementById('reveal-message');
+    const iconElement = document.getElementById('reveal-icon');
+    
+    messageElement.textContent = message;
+    iconElement.textContent = icon || '💖';
+    popup.classList.add('active');
+    
+    setTimeout(() => {
+        if (popup.classList.contains('active')) {
+            closeReveal();
+        }
+    }, 5000);
+}
+
+function closeReveal() {
+    document.getElementById('romantic-reveal-popup').classList.remove('active');
+}
+
+function showHint(hintText) {
+    const hintBox = document.getElementById('hint-box');
+    const hintTextElement = document.getElementById('hint-text');
+    
+    hintTextElement.textContent = hintText;
+    hintBox.style.display = 'flex';
+    
+    setTimeout(() => {
+        hideHint();
+    }, 8000);
+}
+
+function hideHint() {
+    document.getElementById('hint-box').style.display = 'none';
+}
+
+function updateProgress() {
+    const connected = matchGameState.completedPairs.length;
+    const total = loveStoryMatchData.length;
+    const percent = (connected / total) * 100;
+    
+    document.getElementById('connected-count').textContent = connected;
+    updateLoveBar('love-fill-4', 'love-percent-4', percent);
+}
+
+function updateQuestionItem(questionId, state) {
+    const item = document.querySelector(`.question-item[data-id="${questionId}"]`);
+    if (item) {
+        item.className = 'match-item question-item';
+        if (state === 'completed') {
+            item.classList.add('completed');
+        }
+    }
+}
+
+function updateAnswerItem(answerIndex, state) {
+    const item = document.querySelector(`.answer-item[data-index="${answerIndex}"]`);
+    if (item) {
+        item.className = 'match-item answer-item';
+        if (state === 'completed') {
+            item.classList.add('completed');
+        }
+    }
+}
+
+function clearQuestionDisplay() {
+    document.getElementById('current-question-text').textContent = 'Click a question number to begin';
+}
+
+function resetMatchGame() {
+    initializeMatchGame();
+}
+
+// ======================
+// VIDEO FUNCTION
 // ======================
 
 function playVideo() {
@@ -605,7 +1024,7 @@ function playVideo() {
             if (overlay) overlay.style.display = 'none';
         }).catch(error => {
             console.error("Video error:", error);
-            showToast("⚠️ Make sure 'our-dance.mp4' is in the videos/ folder");
+            showToast("⚠️ Make sure 'our-dance.mp4' is in videos/ folder");
         });
     }
 }
@@ -613,6 +1032,16 @@ function playVideo() {
 // ======================
 // UTILITY FUNCTIONS
 // ======================
+
+function updateLoveBar(fillId, percentId, percent) {
+    const fill = document.getElementById(fillId);
+    const percentElement = document.getElementById(percentId);
+    
+    if (fill && percentElement) {
+        fill.style.width = `${percent}%`;
+        percentElement.textContent = `${Math.round(percent)}%`;
+    }
+}
 
 function showToast(message) {
     const existingToast = document.querySelector('.toast-message');
@@ -647,34 +1076,13 @@ function showToast(message) {
     }, 3000);
 }
 
-// Add toast styles
-if (!document.querySelector('#toastStyles')) {
-    const style = document.createElement('style');
-    style.id = 'toastStyles';
-    style.textContent = `
-        @keyframes toastSlideUp {
-            from {
-                opacity: 0;
-                transform: translateX(-50%) translateY(100%);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(-50%) translateY(0);
-            }
-        }
-        
-        @keyframes toastSlideDown {
-            from {
-                opacity: 1;
-                transform: translateX(-50%) translateY(0);
-            }
-            to {
-                opacity: 0;
-                transform: translateX(-50%) translateY(100%);
-            }
-        }
-    `;
-    document.head.appendChild(style);
+function shuffleArray(array) {
+    const newArray = [...array];
+    for (let i = newArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+    }
+    return newArray;
 }
 
 // ======================
@@ -740,8 +1148,8 @@ function updateSkipPanel() {
         3: "Transition 1",
         4: "Game 1: Tap Hearts",
         5: "Transition 2",
-        6: "Maze Intro",
-        7: "Game 2: Maze",
+        6: "Love Scramble Intro",
+        7: "Game 2: Love Scramble",
         8: "Transition 3",
         9: "7 Days Intro",
         10: "Day 1",
@@ -754,7 +1162,7 @@ function updateSkipPanel() {
         17: "Transition 4",
         18: "Game 3: Riddles",
         19: "Transition 5",
-        20: "Game 4: Memory",
+        20: "Game 4: Memory Match",
         21: "Nostalgic Dance Video",
         22: "Final Message"
     };
@@ -778,6 +1186,34 @@ function updateSkipPanel() {
 }
 
 // ======================
+// PAGE 2: FUNNY NO BUTTON
+// ======================
+
+function funnyNo() {
+    const messages = [
+        "Are you sure? 🥺",
+        "Think about it again! 💖",
+        "Pretty please? 🥰",
+        "I'll wait forever for you! ⏳",
+        "Try the YES button! 😊",
+        "My heart says you mean YES! ❤️",
+        "Let's try that again... 😉",
+        "You know you want to say YES! 💕"
+    ];
+    
+    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+    
+    const messageDiv = document.createElement('div');
+    messageDiv.textContent = randomMessage;
+    messageDiv.className = 'floating-message';
+    
+    document.body.appendChild(messageDiv);
+    setTimeout(() => {
+        if (messageDiv.parentNode) messageDiv.remove();
+    }, 2000);
+}
+
+// ======================
 // INITIALIZATION
 // ======================
 
@@ -789,7 +1225,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Expose functions to global scope
     window.goToPage = goToPage;
     window.funnyNo = funnyNo;
-    window.resetMaze = resetMaze;
+    window.useHint = useHint;
+    window.checkScramble = checkScramble;
+    window.resetScramble = resetScramble;
     window.playVideo = playVideo;
     window.showHint = showHint;
     window.resetMatchGame = resetMatchGame;
@@ -821,79 +1259,62 @@ function createFloatingHearts() {
         `;
         container.appendChild(heart);
     }
-    
-    if (!document.querySelector('#floatAnimation')) {
-        const style = document.createElement('style');
-        style.id = 'floatAnimation';
-        style.textContent = `
-            @keyframes float {
-                0% {
-                    transform: translateY(100vh) rotate(0deg);
-                    opacity: 0;
-                }
-                10% {
-                    opacity: 0.7;
-                }
-                90% {
-                    opacity: 0.7;
-                }
-                100% {
-                    transform: translateY(-100px) rotate(360deg);
-                    opacity: 0;
-                }
+}
+
+// Add toast styles
+if (!document.querySelector('#toastStyles')) {
+    const style = document.createElement('style');
+    style.id = 'toastStyles';
+    style.textContent = `
+        @keyframes toastSlideUp {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(100%);
             }
-        `;
-        document.head.appendChild(style);
-    }
-}
-
-// ======================
-// PAGE 2: FUNNY NO BUTTON
-// ======================
-
-function funnyNo() {
-    const messages = [
-        "Are you sure? 🥺",
-        "Think about it again! 💖",
-        "Pretty please? 🥰",
-        "I'll wait forever for you! ⏳",
-        "Try the YES button! 😊",
-        "My heart says you mean YES! ❤️",
-        "Let's try that again... 😉",
-        "You know you want to say YES! 💕"
-    ];
-    
-    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-    
-    const messageDiv = document.createElement('div');
-    messageDiv.textContent = randomMessage;
-    messageDiv.className = 'floating-message';
-    messageDiv.style.cssText = `
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: linear-gradient(45deg, #e74c89, #ff6b8b);
-        color: white;
-        padding: 20px 40px;
-        border-radius: 50px;
-        font-size: 1.5rem;
-        font-weight: bold;
-        z-index: 9999;
-        animation: floatMessage 2s ease forwards;
-        box-shadow: 0 15px 35px rgba(231, 76, 137, 0.4);
-        text-align: center;
-        min-width: 300px;
-        max-width: 80%;
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+        
+        @keyframes toastSlideDown {
+            from {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(-50%) translateY(100%);
+            }
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
     `;
-    
-    document.body.appendChild(messageDiv);
-    setTimeout(() => {
-        if (messageDiv.parentNode) messageDiv.remove();
-    }, 2000);
+    document.head.appendChild(style);
 }
 
-// Add animation for floating message
+// Add message animation
 if (!document.querySelector('#messageAnimation')) {
     const style = document.createElement('style');
     style.id = 'messageAnimation';
@@ -922,7 +1343,3 @@ if (!document.querySelector('#messageAnimation')) {
     `;
     document.head.appendChild(style);
 }
-
-// Note: Functions for Game 3 (Riddles) and Game 4 (Memory Match) 
-// would be the same as in your previous working version
-// I've omitted them here to keep the code focused on the fixes
