@@ -13,6 +13,160 @@
         .page { display: none; }
         .page.active { display: flex; }
         .btn { transition: all 0.3s; }
+        
+        /* Video play button */
+        .video-play-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+        }
+        
+        .video-play-button {
+            width: 100px;
+            height: 100px;
+            background: rgba(231, 76, 137, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            border: 5px solid white;
+            box-shadow: 0 0 40px rgba(231, 76, 137, 0.8);
+            transition: transform 0.3s;
+        }
+        
+        .video-play-button:hover {
+            transform: scale(1.1);
+        }
+        
+        .video-play-button i {
+            font-size: 3rem;
+            color: white;
+            margin-left: 8px;
+        }
+        
+        /* Love Scramble specific */
+        .word-tile {
+            display: inline-block;
+            margin: 8px;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, rgba(255, 182, 193, 0.9), rgba(255, 105, 180, 0.9));
+            border-radius: 15px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #5a3d5c;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(255, 105, 180, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            user-select: none;
+        }
+        
+        .word-tile:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(255, 105, 180, 0.3);
+            background: linear-gradient(135deg, rgba(255, 105, 180, 0.9), rgba(255, 182, 193, 0.9));
+        }
+        
+        .word-tile.selected {
+            background: linear-gradient(135deg, #e74c89, #ff6b8b);
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(231, 76, 137, 0.5);
+        }
+        
+        .word-tile.used {
+            opacity: 0.4;
+            cursor: default;
+            transform: none;
+        }
+        
+        .word-tile.used:hover {
+            transform: none;
+            box-shadow: 0 8px 20px rgba(255, 105, 180, 0.2);
+        }
+        
+        #sentence-area {
+            min-height: 120px;
+            background: linear-gradient(135deg, rgba(255, 250, 250, 0.9), rgba(255, 240, 245, 0.9));
+            border-radius: 20px;
+            border: 3px dashed #ffccd5;
+            padding: 25px;
+            margin: 30px auto;
+            max-width: 800px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            min-height: 100px;
+        }
+        
+        .sentence-word {
+            display: inline-block;
+            padding: 10px 18px;
+            background: linear-gradient(135deg, #ff6b8b, #e74c89);
+            color: white;
+            border-radius: 12px;
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin: 5px;
+            animation: wordAppear 0.5s ease;
+            box-shadow: 0 5px 15px rgba(231, 76, 137, 0.3);
+        }
+        
+        #scramble-area {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 20px;
+            border: 3px solid #ffccd5;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+        }
+        
+        .scramble-stats {
+            display: flex;
+            justify-content: space-between;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 15px 30px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            border: 2px solid #ffccd5;
+        }
+        
+        @keyframes wordAppear {
+            0% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        
+        @keyframes wordSuccess {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .success-flash {
+            animation: successFlash 0.5s ease;
+        }
+        
+        @keyframes successFlash {
+            0%, 100% { background-color: #f8f9fa; }
+            50% { background-color: rgba(46, 204, 113, 0.3); }
+        }
     </style>
 </head>
 <body>
@@ -95,52 +249,77 @@
             <div class="page-content">
                 <img src="https://media.giphy.com/media/Pybbm72nZjkZXFr1PU/giphy.gif" alt="Panda with heart" class="gif">
                 <h2>Great job! You filled my heart with love!</h2>
-                <p>Now navigate through the maze to find your way to my heart...</p>
+                <p>Now help me untangle my moonlit thoughts...</p>
+                <p>A secret sentence needs arranging!</p>
                 <div class="countdown">Next game in <span id="countdown2">8</span> seconds...</div>
             </div>
         </section>
         
-        <!-- PAGE 6: MAZE INTRO -->
+        <!-- PAGE 6: LOVE SCRAMBLE INTRO -->
         <section id="page6" class="page">
             <div class="page-content">
-                <h2>Find Your Way to My Heart</h2>
-                <p>Use arrow keys or WASD to navigate through the maze</p>
-                <p class="instructions"><i class="fas fa-arrow-up"></i> Reach the green heart at the end</p>
+                <h2>🌙 Moonlight Whispers</h2>
+                <p>My heart wrote you a message under the silver moonlight,</p>
+                <p>but the words got scattered like stars across the sky.</p>
+                <p class="instructions">Touch each word in the order my desire beats for you...</p>
+                <p>Some confessions taste sweeter when pieced together slowly.</p>
                 <button class="btn" onclick="goToPage(7)">
-                    Start Maze <i class="fas fa-play"></i>
+                    Begin Decoding <i class="fas fa-moon"></i>
                 </button>
             </div>
         </section>
         
-        <!-- PAGE 7: GAME 2 - MAZE (COMPLETELY FIXED) -->
+        <!-- PAGE 7: GAME 2 - LOVE SCRAMBLE -->
         <section id="page7" class="page">
             <div class="page-content">
-                <h2>Love Maze</h2>
-                <p>Guide the pink heart through to reach the green heart</p>
+                <h2>Unscramble My Desire 🌙❤️</h2>
+                <p>Arrange these words to reveal my moonlit confession...</p>
                 
-                <div id="maze-game-container">
-                    <canvas id="maze-canvas" width="650" height="500"></canvas>
+                <div class="love-bar-container">
+                    <div class="love-bar-label">Progress: <span id="word-count">0</span>/20 words</div>
+                    <div class="love-bar">
+                        <div class="love-fill" id="love-fill-2" style="width: 0%"></div>
+                    </div>
+                    <div class="love-percent" id="love-percent-2">0%</div>
                 </div>
                 
-                <div class="key-instructions">
-                    <div class="key-row">
-                        <div class="key">↑</div>
-                        <div class="key">W</div>
-                    </div>
-                    <div class="key-row">
-                        <div class="key">←</div>
-                        <div class="key">A</div>
-                        <div class="key">↓</div>
-                        <div class="key">S</div>
-                        <div class="key">→</div>
-                        <div class="key">D</div>
-                    </div>
+                <div class="scramble-stats">
+                    <div>Words placed: <span id="placed-count">0</span></div>
+                    <div>Hint available: <span id="hint-status">🌙 Yes</span></div>
+                    <div>Time: <span id="scramble-timer">0:00</span></div>
                 </div>
                 
-                <p class="controls"><i class="fas fa-keyboard"></i> Use arrow keys or WASD</p>
-                <button class="btn" onclick="resetMaze()">
-                    Reset Maze <i class="fas fa-redo"></i>
-                </button>
+                <!-- Sentence being built -->
+                <div id="sentence-area">
+                    <p id="empty-message">Click words below to build the sentence...</p>
+                </div>
+                
+                <!-- Scrambled words -->
+                <div id="scramble-area">
+                    <!-- Words appear here by JavaScript -->
+                </div>
+                
+                <div class="game-controls">
+                    <button class="btn secondary-btn" onclick="useHint()" id="hint-btn">
+                        <i class="fas fa-moon"></i> Moonlight Hint
+                    </button>
+                    <button class="btn" onclick="checkScramble()" id="check-btn">
+                        <i class="fas fa-heart"></i> Test Desire
+                    </button>
+                    <button class="btn secondary-btn" onclick="resetScramble()">
+                        <i class="fas fa-redo"></i> Start Over
+                    </button>
+                </div>
+                
+                <!-- Success message (hidden initially) -->
+                <div id="success-message" class="success-message" style="display: none;">
+                    <div class="success-icon">💖</div>
+                    <h3>Perfect! You decoded my heart's desire!</h3>
+                    <p id="revealed-sentence"></p>
+                    <button class="btn" onclick="goToPage(8)">
+                        Continue Journey <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
             </div>
         </section>
         
@@ -148,7 +327,7 @@
         <section id="page8" class="page">
             <div class="page-content">
                 <img src="https://media.giphy.com/media/OhDXl3VTkxbrO/giphy.gif" alt="Panda with heart" class="gif">
-                <h2>You found your way! ❤️</h2>
+                <h2>You perfectly arranged my secret desire! ❤️</h2>
                 <p>Now let me share 7 days of our beautiful memories...</p>
                 <div class="countdown">Starting in <span id="countdown3">8</span> seconds...</div>
             </div>
@@ -174,6 +353,7 @@
             </div>
         </section>
         
+        <!-- PAGE 10-16: 7 DAYS (Unchanged from before) -->
         <!-- PAGE 10: DAY 1 -->
         <section id="page10" class="page">
             <div class="page-content">
@@ -406,30 +586,24 @@
 
                 <!-- Picture Display -->
                 <div class="picture-display-container">
-                    <!-- Placeholder shown when no picture is selected -->
                     <div class="picture-placeholder" id="picture-placeholder">
                         <i class="fas fa-heart"></i>
                         <span>Select a memory to see its picture</span>
                     </div>
                     
-                    <!-- Actual picture (hidden by default) -->
                     <img src="" alt="Our Beautiful Memory" class="memory-picture" id="memory-picture">
                     
-                    <!-- Picture caption -->
                     <div class="picture-caption" id="picture-caption">
                         Click a question number to see its picture!
                     </div>
                 </div>
                 
-                <!-- Hint Box -->
                 <div class="hint-box" id="hint-box" style="display: none;">
                     <i class="fas fa-lightbulb"></i> 
                     <span id="hint-text">Need help? Try again!</span>
                 </div>
                 
-                <!-- Game Container -->
                 <div class="love-match-game" id="love-match-game">
-                    <!-- Left: Question Numbers -->
                     <div class="match-column questions-column">
                         <h3><i class="fas fa-question-circle"></i> Memories</h3>
                         <div class="match-items" id="question-items">
@@ -437,7 +611,6 @@
                         </div>
                     </div>
                     
-                    <!-- Right: Answers -->
                     <div class="match-column answers-column">
                         <h3><i class="fas fa-star"></i> Answers</h3>
                         <div class="match-items" id="answer-items">
@@ -446,7 +619,6 @@
                     </div>
                 </div>
                 
-                <!-- Romantic Reveal Popup -->
                 <div class="romantic-reveal-popup" id="romantic-reveal-popup">
                     <div class="reveal-content">
                         <button class="close-reveal" onclick="closeReveal()">
@@ -470,22 +642,18 @@
             </div>
         </section>
         
-        <!-- PAGE 21: NOSTALGIC DANCE VIDEO (FIXED) -->
+        <!-- PAGE 21: NOSTALGIC DANCE VIDEO -->
         <section id="page21" class="page">
             <div class="page-content">
                 <h2>Our First Dance 💃🕺</h2>
                 <p class="subtitle">Relive our magical moment...</p>
                 
-                <!-- Video Player with Fallback -->
                 <div class="video-player-container">
                     <div class="video-wrapper">
                         <video id="nostalgic-video" width="100%" height="450" preload="metadata" controls>
-                            <!-- Multiple video sources for compatibility -->
                             <source src="videos/our-dance.mp4" type="video/mp4">
                             <source src="videos/our-dance.webm" type="video/webm">
-                            <source src="videos/our-dance.ogg" type="video/ogg">
-                            Your browser doesn't support HTML5 video. 
-                            <a href="videos/our-dance.mp4">Download the video</a> instead.
+                            Your browser doesn't support video
                         </video>
                         <div class="video-play-overlay" onclick="playVideo()">
                             <div class="video-play-button">
@@ -497,11 +665,10 @@
                     
                     <div class="video-note">
                         <i class="fas fa-heart"></i>
-                        <p>If video doesn't load, make sure <strong>our-dance.mp4</strong> is in the <strong>videos/</strong> folder</p>
+                        <p>Make sure <strong>our-dance.mp4</strong> is in the <strong>videos/</strong> folder</p>
                     </div>
                 </div>
                 
-                <!-- Romantic Text -->
                 <div class="love-note">
                     <p>"That awkward, perfect dance where we stepped on each other's feet more times than we count... 
                     and I wouldn't change a single moment of it. You were, and always will be, my perfect dance partner."</p>
@@ -556,7 +723,6 @@
     
     <!-- Video fallback script -->
     <script>
-        // Video play function
         function playVideo() {
             const video = document.getElementById('nostalgic-video');
             const overlay = document.querySelector('.video-play-overlay');
@@ -572,7 +738,6 @@
             }
         }
         
-        // Hide overlay when video starts playing
         document.addEventListener('DOMContentLoaded', function() {
             const video = document.getElementById('nostalgic-video');
             const overlay = document.querySelector('.video-play-overlay');
@@ -584,18 +749,6 @@
                 
                 video.addEventListener('pause', function() {
                     overlay.style.display = 'flex';
-                });
-                
-                // Check if video can play
-                video.addEventListener('error', function(e) {
-                    console.error("Video loading error:", video.error);
-                    overlay.innerHTML = `
-                        <div class="video-error">
-                            <i class="fas fa-exclamation-triangle"></i>
-                            <p>Video not found</p>
-                            <p>Please add <strong>our-dance.mp4</strong> to the <strong>videos/</strong> folder</p>
-                        </div>
-                    `;
                 });
             }
         });
