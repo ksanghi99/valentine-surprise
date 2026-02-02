@@ -1011,131 +1011,163 @@ function resetMatchGame() {
 }
 
 // ======================
-// VIDEO FUNCTIONS (Manual Play)
+// MOV VIDEO FUNCTIONS
 // ======================
 
-function playVideoManually() {
-    console.log("🎬 Attempting to play video manually...");
+function playMOVVideo() {
+    console.log("🎬 Attempting to play MOV video...");
     
     const video = document.getElementById('nostalgic-video');
     const placeholder = document.getElementById('video-placeholder');
     const statusDiv = document.getElementById('video-status');
     const errorDiv = document.getElementById('video-error');
     
-    // Hide any previous error
+    // Check browser support
+    const canPlayMOV = video.canPlayType('video/quicktime');
+    console.log("MOV support:", canPlayMOV);
+    
+    if (canPlayMOV === '' || canPlayMOV === 'no') {
+        // MOV not supported
+        if (errorDiv) {
+            errorDiv.style.display = 'block';
+            errorDiv.querySelector('h4').textContent = "MOV Format Not Supported";
+            const errorMsg = errorDiv.querySelector('p');
+            if (errorMsg) {
+                errorMsg.innerHTML = `Your browser <strong>${navigator.userAgent.includes('Chrome') ? 'Chrome' : navigator.userAgent.includes('Safari') ? 'Safari' : 'Browser'}</strong> has limited MOV support.`;
+            }
+        }
+        if (placeholder) placeholder.style.display = 'none';
+        return;
+    }
+    
+    // Hide error and placeholder
     if (errorDiv) errorDiv.style.display = 'none';
+    if (placeholder) placeholder.style.display = 'none';
     
     // Show loading status
     if (statusDiv) statusDiv.style.display = 'block';
     
-    // Hide placeholder
-    if (placeholder) placeholder.style.display = 'none';
-    
-    // Show video element
+    // Show video
     if (video) {
         video.style.display = 'block';
         video.classList.add('playing');
         
-        // Set video source (in case it wasn't loaded)
-        if (!video.src || video.src === '') {
-            video.src = 'videos/our-dance.mp4';
-        }
+        // Set MOV source
+        video.src = 'videos/our-dance.mov';
+        video.type = 'video/quicktime';
         
         // Try to play
         const playPromise = video.play();
         
         if (playPromise !== undefined) {
             playPromise.then(() => {
-                console.log("✅ Video playing successfully!");
+                console.log("✅ MOV video playing!");
                 if (statusDiv) statusDiv.style.display = 'none';
             }).catch(error => {
-                console.error("❌ Video play failed:", error);
-                
-                // Show error message
-                if (errorDiv) {
-                    errorDiv.style.display = 'block';
-                    if (placeholder) placeholder.style.display = 'flex';
-                    video.style.display = 'none';
-                }
-                
-                if (statusDiv) statusDiv.style.display = 'none';
-                
-                // Show specific error message
-                let errorMsg = "Video failed to play.";
-                if (error.name === 'NotAllowedError') {
-                    errorMsg = "Browser blocked playback. Click the play button on the video.";
-                } else if (error.name === 'NotFoundError') {
-                    errorMsg = "Video file not found. Check videos/our-dance.mp4";
-                }
-                
-                if (errorDiv.querySelector('span')) {
-                    errorDiv.querySelector('span').textContent = errorMsg;
-                }
+                console.error("❌ MOV play failed:", error);
+                handleMOVError(error);
             });
         }
     }
 }
 
-function retryVideo() {
-    const video = document.getElementById('nostalgic-video');
+function handleMOVError(error) {
     const placeholder = document.getElementById('video-placeholder');
     const errorDiv = document.getElementById('video-error');
+    const statusDiv = document.getElementById('video-status');
     
-    // Reset everything
-    if (errorDiv) errorDiv.style.display = 'none';
-    if (placeholder) placeholder.style.display = 'flex';
-    if (video) {
-        video.style.display = 'none';
-        video.classList.remove('playing');
-        video.src = 'videos/our-dance.mp4';
-        video.load(); // Reload the video
+    // Show error
+    if (errorDiv) {
+        let errorMsg = "MOV video failed to play.";
+        if (error.name === 'NotSupportedError') {
+            errorMsg = "MOV format not supported. Convert to MP4.";
+        } else if (error.name === 'NotAllowedError') {
+            errorMsg = "Click the play button on the video player.";
+        }
+        
+        errorDiv.style.display = 'block';
+        if (errorDiv.querySelector('span')) {
+            errorDiv.querySelector('span').textContent = errorMsg;
+        }
     }
     
-    console.log("🔄 Retrying video...");
+    // Hide loading, show placeholder
+    if (statusDiv) statusDiv.style.display = 'none';
+    if (placeholder) placeholder.style.display = 'flex';
 }
 
-// Initialize video when page loads
+function retryVideo() {
+    const errorDiv = document.getElementById('video-error');
+    const placeholder = document.getElementById('video-placeholder');
+    
+    if (errorDiv) errorDiv.style.display = 'none';
+    if (placeholder) placeholder.style.display = 'flex';
+    
+    console.log("🔄 Retrying MOV video...");
+}
+
+function downloadVideo() {
+    // Create download link for MOV file
+    const link = document.createElement('a');
+    link.href = 'videos/our-dance.mov';
+    link.download = 'Our_First_Dance.mov';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    console.log("📥 Download initiated");
+}
+
+function testMOVSupport() {
+    const video = document.getElementById('nostalgic-video');
+    const canPlay = video.canPlayType('video/quicktime');
+    
+    let message = "";
+    if (canPlay === 'probably') {
+        message = "✅ Great! Your browser fully supports MOV format.";
+    } else if (canPlay === 'maybe') {
+        message = "⚠️ Your browser might support MOV. Try playing.";
+    } else {
+        message = "❌ Your browser doesn't support MOV. Convert to MP4.";
+    }
+    
+    alert(message + "\n\nBrowser: " + navigator.userAgent.split(')')[0].split('(')[1]);
+}
+
+// Initialize video
 document.addEventListener('DOMContentLoaded', function() {
     const video = document.getElementById('nostalgic-video');
+    const placeholder = document.getElementById('video-placeholder');
     
-    if (video) {
-        // Preload the video (but don't autoplay)
-        video.preload = 'metadata';
-        video.src = 'videos/our-dance.mp4';
+    if (video && placeholder) {
+        // Check format support
+        const canPlayMOV = video.canPlayType('video/quicktime');
+        const canPlayMP4 = video.canPlayType('video/mp4');
         
-        // Listen for video errors
-        video.addEventListener('error', function(e) {
-            console.error("Video error:", video.error);
-            
-            const errorDiv = document.getElementById('video-error');
-            const placeholder = document.getElementById('video-placeholder');
-            
-            if (errorDiv) {
-                errorDiv.style.display = 'block';
-                if (video.error && video.error.code === 4) {
-                    errorDiv.querySelector('span').textContent = "Video file not found or invalid.";
-                }
-            }
-            
-            if (placeholder) placeholder.style.display = 'flex';
-            video.style.display = 'none';
-        });
+        console.log("Format support - MOV:", canPlayMOV, "MP4:", canPlayMP4);
         
-        // When video ends, show placeholder again
-        video.addEventListener('ended', function() {
-            const placeholder = document.getElementById('video-placeholder');
-            if (placeholder) {
-                placeholder.style.display = 'flex';
-                video.style.display = 'none';
-                video.classList.remove('playing');
+        // Update placeholder text based on support
+        const formatNote = document.querySelector('.format-note');
+        if (formatNote) {
+            if (canPlayMOV === 'probably') {
+                formatNote.textContent = "(MOV format - Full support detected)";
+                formatNote.style.color = "rgba(46, 204, 113, 0.8)";
+            } else if (canPlayMOV === 'maybe') {
+                formatNote.textContent = "(MOV format - Limited support)";
+                formatNote.style.color = "rgba(255, 204, 0, 0.8)";
+            } else {
+                formatNote.textContent = "(MOV format - May need conversion to MP4)";
+                formatNote.style.color = "rgba(255, 107, 107, 0.8)";
             }
-        });
+        }
     }
 });
 
-// Expose function to global scope
-window.playVideoManually = playVideoManually;
+// Expose functions
+window.playMOVVideo = playMOVVideo;
 window.retryVideo = retryVideo;
+window.downloadVideo = downloadVideo;
+window.testMOVSupport = testMOVSupport;
 
 // ======================
 // UTILITY FUNCTIONS
