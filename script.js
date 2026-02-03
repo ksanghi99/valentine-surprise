@@ -1484,10 +1484,10 @@ if (!document.querySelector('#messageAnimation')) {
     document.head.appendChild(style);
 }
 /* =========================================== */
-/* VALENTINE'S WEEK JAVASCRIPT - ADD TO END   */
+/* ENHANCED VALENTINE WEEK JAVASCRIPT */
 /* =========================================== */
 
-// Valentine Week Data
+// Valentine Week Data - UPDATED
 const valentineWeekData = {
   currentDay: 1,
   progress: JSON.parse(localStorage.getItem('valentineProgress')) || [],
@@ -1526,13 +1526,13 @@ const valentineWeekData = {
         rosesFound: 0,
         totalRoses: 7,
         roseMessages: [
-          "You make my heart bloom",
-          "Every day with you is beautiful",
-          "Your smile is my sunshine",
-          "I love watching our love grow",
-          "You're more precious than any rose",
-          "My love for you has no thorns",
-          "Forever blooming with you"
+          "You make my heart bloom like the first spring rose",
+          "Every day with you is more beautiful than a garden in full bloom",
+          "Your smile is my sunshine that helps our love grow",
+          "I love watching our love grow stronger every day",
+          "You're more precious than the rarest rose in the world",
+          "My love for you has no thorns, only petals of affection",
+          "Forever blooming together in the garden of our love"
         ]
       },
       message: "Just as roses need care to bloom, I promise to nurture our love every single day. Your presence in my life makes everything more beautiful.",
@@ -1569,9 +1569,27 @@ const valentineWeekData = {
         type: "proposal_scenarios",
         selectedScenario: null,
         scenarios: [
-          { type: "romantic", icon: "🌅", title: "Romantic Sunset", description: "Beach, candles, and forever promises" },
-          { type: "funny", icon: "😂", title: "Funny & Us", description: "Laughter, inside jokes, and happiness" },
-          { type: "surprise", icon: "🎉", title: "Surprise Adventure", description: "Unexpected moments, lifelong memories" }
+          { 
+            type: "romantic", 
+            icon: "🌅", 
+            title: "Sunset Proposal", 
+            description: "On a beach at sunset, with candles forming a heart around us",
+            result: "I'd kneel as the sun dips below the horizon, telling you how every sunset reminds me of the beauty you bring to my life."
+          },
+          { 
+            type: "funny", 
+            icon: "😂", 
+            title: "Funny Proposal", 
+            description: "During our favorite comedy show, with a ring in the popcorn",
+            result: "I'd wait for the funniest moment, then whisper 'This is funny, but I'm serious about forever with you' as I show you the ring."
+          },
+          { 
+            type: "surprise", 
+            icon: "🎉", 
+            title: "Surprise Adventure", 
+            description: "During a hike to our favorite spot, with a hidden photographer",
+            result: "At the peak, with the world at our feet, I'd tell you that every adventure is better with you by my side."
+          }
         ]
       },
       message: "Every day with you feels like Propose Day - I'd choose you again and again, in a hundred lifetimes. You are not just my valentine, you are my always and forever.",
@@ -1609,15 +1627,15 @@ const valentineWeekData = {
         chocolatesOpened: 0,
         totalChocolates: 9,
         messages: [
-          "You make everything sweeter",
-          "My favorite flavor is you",
-          "Sharing chocolate, sharing love",
-          "You're my sweetest addiction",
-          "Life is sweeter with you",
-          "You're better than chocolate",
-          "My heart melts for you",
-          "You're my guilty pleasure",
-          "Forever my sweetheart"
+          "You make everything in life sweeter",
+          "My favorite flavor will always be you",
+          "Sharing chocolate with you is sharing love",
+          "You're my sweetest, most delicious addiction",
+          "Life tastes infinitely better with you in it",
+          "You're even sweeter than the finest chocolate",
+          "My heart completely melts for you every day",
+          "You're my favorite guilty pleasure, forever",
+          "You will always be my ultimate sweetheart"
         ]
       },
       message: "Life with you is sweeter than the finest chocolate. Every moment shared with you feels like indulging in the most delicious treat that never ends.",
@@ -1653,11 +1671,12 @@ const valentineWeekData = {
       interactive: {
         type: "teddy_dressup",
         accessories: [
-          { id: "bow", icon: "🎀", name: "Elegant Bow", collected: false, requirement: "view_photo" },
-          { id: "heart", icon: "💖", name: "Golden Heart", collected: false, requirement: "read_message" },
-          { id: "flower", icon: "🌺", name: "Flower Crown", collected: false, requirement: "complete_quiz" }
+          { id: "bow", icon: "🎀", name: "Elegant Bow", collected: false, requirement: "view_photo", position: "top" },
+          { id: "heart", icon: "💖", name: "Golden Heart", collected: false, requirement: "read_message", position: "right" },
+          { id: "flower", icon: "🌺", name: "Flower Crown", collected: false, requirement: "complete_quiz", position: "left" }
         ],
-        quizCompleted: false
+        quizCompleted: false,
+        teddyState: "plain" // plain, partial, complete
       },
       message: "Your embrace feels like home - warm, safe, and comforting. No matter what happens, being in your arms makes everything okay.",
       promise: "I'll always be your safe space to fall into"
@@ -1693,14 +1712,15 @@ const valentineWeekData = {
         type: "promise_tree",
         promises: [],
         promiseSuggestions: [
-          "Always listen to you",
-          "Make you laugh every day",
-          "Support your dreams",
-          "Be honest always",
-          "Cherish every moment",
-          "Grow together",
-          "Never give up on us"
-        ]
+          "Always listen to your heart",
+          "Make you laugh every single day",
+          "Support every dream you have",
+          "Be honest in all things, always",
+          "Cherish every moment we share",
+          "Grow together through all seasons",
+          "Never give up on us, ever"
+        ],
+        treeGrowth: 0
       },
       message: "My promises to you aren't just for today - they're for every tomorrow we'll share. Each vow is a seed we plant together for our future.",
       promise: "I'll keep every promise, big and small"
@@ -1737,7 +1757,8 @@ const valentineWeekData = {
         hugsGiven: 0,
         targetHugs: 12,
         hugTypes: ["bear", "side", "surprise"],
-        warmthLevel: 0
+        warmthLevel: 0,
+        lastHugType: null
       },
       message: "No words are needed when we hug - everything is said in that embrace. Your hugs heal, comfort, and remind me I'm home.",
       promise: "I'll always have hugs ready for you, anytime you need"
@@ -1772,9 +1793,10 @@ const valentineWeekData = {
       interactive: {
         type: "kiss_collection",
         kisses: [
-          { type: "forehead", icon: "💋", name: "Forehead Kiss", unlocked: false, description: "Gentle and protective" },
-          { type: "cheek", icon: "😘", name: "Cheek Kiss", unlocked: false, description: "Sweet and affectionate" },
-          { type: "lips", icon: "❤️", name: "Lip Kiss", unlocked: false, description: "Passionate and loving" }
+          { type: "romantic", icon: "🌹", name: "Romantic Kiss", unlocked: false, description: "Sweet and loving", intensity: "Romantic", requirement: "view_photos" },
+          { type: "passionate", icon: "🔥", name: "Passionate Kiss", unlocked: false, description: "Deep and intense", intensity: "Passionate", requirement: "read_message" },
+          { type: "playful", icon: "😘", name: "Playful Kiss", unlocked: false, description: "Fun and teasing", intensity: "Playful", requirement: "make_promise" },
+          { type: "tender", icon: "💖", name: "Tender Kiss", unlocked: false, description: "Gentle and caring", intensity: "Tender", requirement: "complete_game" }
         ],
         allUnlocked: false
       },
@@ -1784,53 +1806,1190 @@ const valentineWeekData = {
   ]
 };
 
-// Valentine Week Functions
-function goToValentineDay(dayNumber) {
-  valentineWeekData.currentDay = dayNumber;
+// 1. Page 2 - Random Funny Options
+function setupPage2() {
+  const funnyNoBtn = document.getElementById('funny-no-btn');
+  const randomOptionsDiv = document.getElementById('random-options');
   
-  // Hide all pages
-  document.querySelectorAll('.page').forEach(page => {
-    page.classList.remove('active');
-    page.style.display = 'none';
-  });
-  
-  // Show valentine day container
-  const dayContainer = document.getElementById('valentine-day-container');
-  dayContainer.style.display = 'flex';
-  dayContainer.classList.add('active');
-  
-  // Load the day
-  loadValentineDay(dayNumber);
+  if (funnyNoBtn && randomOptionsDiv) {
+    const funnyMessages = [
+      "Are you sure? 🥺",
+      "Think about it again! 💖", 
+      "Pretty please? 🥰",
+      "I'll wait forever for you! ⏳",
+      "Try the YES button! 😊",
+      "My heart says you mean YES! ❤️",
+      "Let's try that again... 😉",
+      "You know you want to say YES! 💕",
+      "I'll be sad without you! 😢",
+      "Don't break my heart! 💔",
+      "Just kidding, click YES! 😂",
+      "The YES button is lonely! 👉❤️"
+    ];
+    
+    let messageIndex = 0;
+    
+    funnyNoBtn.onclick = function() {
+      // Create floating message
+      const messageDiv = document.createElement('div');
+      messageDiv.className = 'funny-option';
+      messageDiv.textContent = funnyMessages[messageIndex];
+      messageDiv.style.animation = 'popIn 0.3s ease';
+      
+      // Add to container
+      randomOptionsDiv.appendChild(messageDiv);
+      
+      // Remove after 3 seconds
+      setTimeout(() => {
+        messageDiv.style.animation = 'fadeOut 0.5s ease forwards';
+        setTimeout(() => {
+          if (messageDiv.parentNode) {
+            messageDiv.parentNode.removeChild(messageDiv);
+          }
+        }, 500);
+      }, 3000);
+      
+      // Cycle through messages
+      messageIndex = (messageIndex + 1) % funnyMessages.length;
+      
+      // Make button bounce
+      funnyNoBtn.style.animation = 'none';
+      setTimeout(() => {
+        funnyNoBtn.style.animation = 'bounce 0.5s ease';
+      }, 10);
+    };
+  }
 }
 
-function loadValentineDay(dayNumber) {
-  const dayData = valentineWeekData.days.find(d => d.id === dayNumber);
+// 2. Rose Day - Enhanced Game
+function loadRoseGardenGameEnhanced(dayData) {
+  const game = dayData.interactive;
+  const html = `
+    <div class="rose-garden-game">
+      <h3 style="color: ${dayData.color}">Find the 7 Hidden Roses</h3>
+      <p>Click each rose to reveal sweet messages about our love!</p>
+      
+      <div class="garden-container">
+        <div class="rose-counter" style="border-color: ${dayData.color}">
+          Roses Found: <span id="roses-found">${game.rosesFound}</span>/7
+          ${game.rosesFound === game.totalRoses ? ' 🌹 Complete!' : ''}
+        </div>
+        
+        <div class="garden-area" id="garden-area" style="
+          background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+          padding: 40px;
+          border-radius: 25px;
+          border: 4px solid #2ecc71;
+          min-height: 250px;
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 20px;
+          justify-items: center;
+          align-items: center;
+        ">
+          ${Array(game.totalRoses).fill().map((_, i) => `
+            <div class="rose-visual ${game.rosesFound > i ? 'found' : ''}" 
+                 data-index="${i}" 
+                 onclick="findRoseEnhanced(${i}, ${dayData.id})"
+                 style="animation-delay: ${i * 0.2}s;">
+              ${game.rosesFound > i ? '🌹' : '🥀'}
+            </div>
+          `).join('')}
+        </div>
+        
+        <div class="rose-message-bubble" id="rose-message-bubble">
+          ${game.rosesFound > 0 ? 
+            `<p style="color: ${dayData.color}; font-weight: bold;">"${game.roseMessages[game.rosesFound - 1]}"</p>` : 
+            '<p>Click a rose to reveal a sweet message about our love! 💖</p>'
+          }
+        </div>
+      </div>
+      
+      <div class="garden-progress">
+        <div class="rose-bush">
+          <div class="bush-fill" style="width: ${(game.rosesFound / game.totalRoses) * 100}%"></div>
+        </div>
+        <p style="color: ${dayData.color}; font-weight: bold;">
+          ${game.rosesFound === game.totalRoses ? 
+            '🌸 Our love garden is in full bloom! 🌸' : 
+            'Garden blooms as you find roses!'}
+        </p>
+      </div>
+    </div>
+  `;
+  
+  document.getElementById('interactive-game').innerHTML = html;
+}
+
+function findRoseEnhanced(index, dayId) {
+  const dayData = valentineWeekData.days.find(d => d.id === dayId);
+  if (!dayData || dayData.interactive.rosesFound > index) return;
+  
+  dayData.interactive.rosesFound = index + 1;
+  
+  // Update rose visual
+  const roseElement = document.querySelector(`.rose-visual[data-index="${index}"]`);
+  if (roseElement) {
+    roseElement.classList.add('found');
+    roseElement.textContent = '🌹';
+    roseElement.style.pointerEvents = 'none';
+    roseElement.style.cursor = 'default';
+  }
+  
+  // Update counter
+  document.getElementById('roses-found').textContent = dayData.interactive.rosesFound;
+  
+  // Show message with animation
+  const messageElement = document.getElementById('rose-message-bubble');
+  if (messageElement) {
+    messageElement.innerHTML = `<p style="color: ${dayData.color}; font-weight: bold;">"${dayData.interactive.roseMessages[index]}"</p>`;
+    messageElement.style.animation = 'none';
+    setTimeout(() => {
+      messageElement.style.animation = 'fadeIn 0.5s ease';
+    }, 10);
+  }
+  
+  // Update progress bar
+  const bushFill = document.querySelector('.bush-fill');
+  if (bushFill) {
+    bushFill.style.width = `${(dayData.interactive.rosesFound / dayData.interactive.totalRoses) * 100}%`;
+  }
+  
+  // Play rose sound
+  playSound('rose');
+  
+  // If all roses found, mark day as completed
+  if (dayData.interactive.rosesFound === dayData.interactive.totalRoses) {
+    setTimeout(() => {
+      showToast("🌹 Beautiful! You've found all the roses in our love garden!");
+      setTimeout(() => {
+        completeValentineDay(dayId);
+      }, 1500);
+    }, 1000);
+  }
+}
+
+// 3. Propose Day - Enhanced with Different Copies
+function loadProposalGameEnhanced(dayData) {
+  const game = dayData.interactive;
+  const html = `
+    <div class="proposal-game">
+      <h3 style="color: ${dayData.color}">Choose Your Dream Proposal</h3>
+      <p>Each scenario tells a different story of how I'd ask for forever with you</p>
+      
+      <div class="scenarios-container">
+        ${game.scenarios.map(scenario => `
+          <div class="scenario-card-enhanced ${scenario.type} ${game.selectedScenario === scenario.type ? 'selected' : ''}" 
+               data-type="${scenario.type}" 
+               onclick="chooseProposalScenarioEnhanced('${scenario.type}', ${dayData.id})">
+            <div class="scenario-content">
+              <div class="scenario-icon-large">${scenario.icon}</div>
+              <h4 class="scenario-title">${scenario.title}</h4>
+              <p class="scenario-description">${scenario.description}</p>
+            </div>
+            <div class="scenario-hint">
+              Click to explore this proposal
+            </div>
+          </div>
+        `).join('')}
+      </div>
+      
+      ${game.selectedScenario ? `
+        <div class="scenario-result-enhanced" id="scenario-result">
+          <h3>${game.scenarios.find(s => s.type === game.selectedScenario).title}</h3>
+          <p style="font-size: 1.4rem; line-height: 1.6; margin: 20px 0;">
+            ${game.scenarios.find(s => s.type === game.selectedScenario).result}
+          </p>
+          <p style="font-style: italic; margin-top: 25px;">
+            But in truth, I don't need a perfect moment...<br>
+            Every moment with you feels like the right time to say "forever".
+          </p>
+          
+          ${!valentineWeekData.progress.includes(dayData.id) ? `
+            <button class="btn" onclick="completeValentineDay(${dayData.id})" 
+                    style="background: ${dayData.color}; margin-top: 30px; padding: 18px 40px; font-size: 1.4rem;">
+              <i class="fas fa-heart"></i> Accept All My Proposals
+            </button>
+          ` : ''}
+        </div>
+      ` : `
+        <div style="text-align: center; margin: 40px 0; color: #666; font-style: italic;">
+          Select a proposal scenario above to see how I'd ask for forever with you...
+        </div>
+      `}
+    </div>
+  `;
+  
+  document.getElementById('interactive-game').innerHTML = html;
+}
+
+function chooseProposalScenarioEnhanced(type, dayId) {
+  const dayData = valentineWeekData.days.find(d => d.id === dayId);
   if (!dayData) return;
   
-  // Update progress
-  updateValentineProgress();
-  
-  // Generate day HTML
-  const dayHTML = generateDayHTML(dayData);
-  document.getElementById('day-content').innerHTML = dayHTML;
-  
-  // Initialize the interactive game
-  setTimeout(() => {
-    initializeDayGame(dayData);
-  }, 100);
-  
-  // Scroll to top
-  window.scrollTo(0, 0);
+  dayData.interactive.selectedScenario = type;
+  playSound('magic');
+  loadProposalGameEnhanced(dayData);
 }
 
-function generateDayHTML(dayData) {
+// 4. Chocolate Day - Enhanced Visuals
+function loadChocolateGameEnhanced(dayData) {
+  const game = dayData.interactive;
+  const percent = (game.chocolatesOpened / game.totalChocolates) * 100;
+  
+  const html = `
+    <div class="chocolate-game">
+      <h3 style="color: ${dayData.color}">Unwrap Sweet Surprises</h3>
+      <p>Each chocolate holds a sweet message about our love. Click to unwrap!</p>
+      
+      <div class="chocolate-box-enhanced">
+        <div style="text-align: center; margin-bottom: 20px;">
+          <div class="ribbon" style="display: inline-block;">For My Sweetheart 💖</div>
+        </div>
+        
+        <div class="chocolate-grid-enhanced" id="chocolate-grid">
+          ${Array(game.totalChocolates).fill().map((_, i) => `
+            <div class="chocolate-piece-enhanced ${game.chocolatesOpened > i ? 'opened' : ''}" 
+                 data-index="${i}" 
+                 onclick="unwrapChocolateEnhanced(${i}, ${dayData.id})">
+              <div class="chocolate-wrapper">
+                <div class="chocolate-foil">
+                  ${i % 3 === 0 ? '🍫' : i % 3 === 1 ? '❤️' : '💝'}
+                </div>
+                <div class="chocolate-message-enhanced">
+                  ${game.chocolatesOpened > i ? game.messages[i] : 'Click to unwrap!'}
+                </div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+      
+      <div style="max-width: 600px; margin: 30px auto;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+          <span style="color: ${dayData.color}; font-weight: bold;">
+            Unwrapped: <span id="chocolates-opened">${game.chocolatesOpened}</span>/9
+          </span>
+          <span style="color: #FFD700; font-weight: bold;">
+            Sweetness: ${Math.round(percent)}%
+          </span>
+        </div>
+        
+        <div class="sweetness-meter-enhanced">
+          <div class="meter-fill-enhanced" id="sweetness-fill" style="width: ${percent}%"></div>
+        </div>
+        
+        ${game.chocolatesOpened === game.totalChocolates ? `
+          <div class="memory-unlocked" style="margin-top: 25px; background: linear-gradient(45deg, #FFD700, #FFA500);">
+            <i class="fas fa-crown"></i>
+            <span>All chocolates unwrapped! You're my sweetest treasure! 🍫💖</span>
+          </div>
+        ` : ''}
+      </div>
+    </div>
+  `;
+  
+  document.getElementById('interactive-game').innerHTML = html;
+}
+
+function unwrapChocolateEnhanced(index, dayId) {
+  const dayData = valentineWeekData.days.find(d => d.id === dayId);
+  if (!dayData || dayData.interactive.chocolatesOpened > index) return;
+  
+  dayData.interactive.chocolatesOpened = index + 1;
+  
+  // Update chocolate visual
+  const chocolateElement = document.querySelector(`.chocolate-piece-enhanced[data-index="${index}"]`);
+  if (chocolateElement) {
+    chocolateElement.classList.add('opened');
+    chocolateElement.style.pointerEvents = 'none';
+    
+    // Add unwrap animation
+    const foil = chocolateElement.querySelector('.chocolate-foil');
+    if (foil) {
+      foil.style.transition = 'transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+      foil.style.transform = 'translateY(-100%) rotate(20deg)';
+    }
+    
+    // Show message
+    const message = chocolateElement.querySelector('.chocolate-message-enhanced');
+    if (message) {
+      message.textContent = dayData.interactive.messages[index];
+      message.style.animation = 'fadeIn 0.5s ease';
+    }
+  }
+  
+  // Update counter
+  document.getElementById('chocolates-opened').textContent = dayData.interactive.chocolatesOpened;
+  
+  // Update sweetness meter
+  const percent = (dayData.interactive.chocolatesOpened / dayData.interactive.totalChocolates) * 100;
+  const sweetnessFill = document.getElementById('sweetness-fill');
+  if (sweetnessFill) {
+    sweetnessFill.style.width = `${percent}%`;
+  }
+  
+  // Play unwrap sound
+  playSound('unwrap');
+  
+  // Show toast message
+  showToast(`🍫 ${dayData.interactive.messages[index]}`);
+  
+  // If all chocolates unwrapped, mark day as completed
+  if (dayData.interactive.chocolatesOpened === dayData.interactive.totalChocolates) {
+    setTimeout(() => {
+      showToast("🎉 All chocolates unwrapped! You're my sweetest addiction!");
+      setTimeout(() => {
+        completeValentineDay(dayId);
+      }, 2000);
+    }, 1000);
+  }
+}
+
+// 5. Teddy Day - Teddy Transformation
+function loadTeddyGameEnhanced(dayData) {
+  const game = dayData.interactive;
+  const collectedCount = game.accessories.filter(a => a.collected).length;
+  const allCollected = collectedCount === 3;
+  
+  // Determine teddy image based on collection
+  let teddyImage = "images/day4/teddy-plain.jpg";
+  if (allCollected) {
+    teddyImage = "images/day4/teddy-complete.jpg";
+  } else if (collectedCount > 0) {
+    teddyImage = "images/day4/teddy-partial.jpg";
+  }
+  
+  const html = `
+    <div class="teddy-game">
+      <h3 style="color: ${dayData.color}">Dress Up Our Teddy</h3>
+      <p>Collect accessories to dress up our teddy! Click items below to collect them.</p>
+      
+      <div class="teddy-transformation-container">
+        <div class="teddy-stage">
+          <img src="${teddyImage}" alt="Our Teddy" class="teddy-image" 
+               onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop'">
+          
+          <!-- Accessory overlays -->
+          ${game.accessories.map(accessory => accessory.collected ? `
+            <div class="accessory-overlay ${accessory.id} visible" style="color: ${dayData.color}">
+              ${accessory.icon}
+            </div>
+          ` : '').join('')}
+        </div>
+        
+        <div class="accessory-collection-enhanced">
+          <h4 style="color: ${dayData.color}; margin-bottom: 20px;">
+            Collect Accessories (${collectedCount}/3)
+          </h4>
+          <div>
+            ${game.accessories.map(accessory => `
+              <div class="accessory-item-enhanced ${accessory.collected ? 'collected' : ''}" 
+                   data-item="${accessory.id}" 
+                   onclick="${!accessory.collected ? `collectAccessoryEnhanced('${accessory.id}', ${dayData.id})` : ''}"
+                   style="${accessory.collected ? `background: ${dayData.color}; color: white;` : ''}">
+                <div class="accessory-icon-enhanced">${accessory.icon}</div>
+                <h5 style="margin: 10px 0;">${accessory.name}</h5>
+                <p style="font-size: 0.9rem; margin: 0;">
+                  ${accessory.collected ? 
+                    '✓ Collected!' : 
+                    accessory.requirement === 'view_photo' ? 'View all 3 photos' :
+                    accessory.requirement === 'read_message' ? 'Read the love message' :
+                    'Answer the quiz below'
+                  }
+                </p>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+        
+        ${collectedCount >= 2 && !game.quizCompleted ? `
+          <div class="teddy-quiz" id="teddy-quiz" style="
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin: 25px auto;
+            max-width: 500px;
+            border: 3px solid ${dayData.color};
+          ">
+            <h4 style="color: ${dayData.color}; margin-bottom: 20px;">
+              Quick Quiz: Complete to get the final accessory!
+            </h4>
+            <div class="quiz-question">
+              <p style="font-size: 1.2rem; margin-bottom: 15px;">What's our favorite way to spend cozy nights?</p>
+              <button class="quiz-option" onclick="answerTeddyQuizEnhanced(1, ${dayData.id})" 
+                      style="display: block; width: 100%; margin: 10px 0; padding: 15px;">
+                Watching movies under blankets 🎬
+              </button>
+              <button class="quiz-option" onclick="answerTeddyQuizEnhanced(2, ${dayData.id})" 
+                      style="display: block; width: 100%; margin: 10px 0; padding: 15px;">
+                Talking for hours about everything 💬
+              </button>
+              <button class="quiz-option" onclick="answerTeddyQuizEnhanced(3, ${dayData.id})" 
+                      style="display: block; width: 100%; margin: 10px 0; padding: 15px;">
+                Just cuddling in comfortable silence 🤗
+              </button>
+            </div>
+          </div>
+        ` : ''}
+        
+        ${allCollected ? `
+          <div class="memory-unlocked" style="margin-top: 25px; background: ${dayData.color};">
+            <i class="fas fa-award"></i>
+            <span>Teddy fully dressed! Our cuddle companion is complete! 🧸💖</span>
+          </div>
+        ` : ''}
+      </div>
+    </div>
+  `;
+  
+  document.getElementById('interactive-game').innerHTML = html;
+}
+
+function collectAccessoryEnhanced(accessoryId, dayId) {
+  const dayData = valentineWeekData.days.find(d => d.id === dayId);
+  if (!dayData) return;
+  
+  const accessory = dayData.interactive.accessories.find(a => a.id === accessoryId);
+  if (!accessory || accessory.collected) return;
+  
+  // Check requirement
+  let requirementMet = false;
+  switch(accessory.requirement) {
+    case 'view_photo':
+      // Assume requirement met if they're interacting
+      requirementMet = true;
+      break;
+    case 'read_message':
+      requirementMet = true;
+      break;
+    case 'complete_quiz':
+      requirementMet = dayData.interactive.quizCompleted;
+      break;
+  }
+  
+  if (requirementMet) {
+    accessory.collected = true;
+    playSound('collect');
+    showToast(`🎀 Collected ${accessory.name}! Our teddy looks cuter!`);
+    
+    // Reload game to show updated state
+    setTimeout(() => {
+      loadTeddyGameEnhanced(dayData);
+      
+      // Check if all accessories collected
+      const allCollected = dayData.interactive.accessories.every(a => a.collected);
+      if (allCollected) {
+        setTimeout(() => {
+          showToast("🎉 Teddy is fully dressed and ready for cuddles!");
+          setTimeout(() => {
+            completeValentineDay(dayId);
+          }, 1500);
+        }, 1000);
+      }
+    }, 500);
+  } else {
+    showToast(`Complete the requirement to collect ${accessory.name}!`);
+  }
+}
+
+function answerTeddyQuizEnhanced(answer, dayId) {
+  const dayData = valentineWeekData.days.find(d => d.id === dayId);
+  if (!dayData) return;
+  
+  // All answers are "correct" for this sweet quiz
+  dayData.interactive.quizCompleted = true;
+  playSound('correct');
+  showToast("Perfect answer! You know us so well! 💖");
+  
+  // Reload the game to show quiz completion
+  setTimeout(() => {
+    loadTeddyGameEnhanced(dayData);
+  }, 800);
+}
+
+// 6. Promise Day - Visual Tree
+function loadPromiseGameEnhanced(dayData) {
+  const game = dayData.interactive;
+  const promiseCount = game.promises.length;
+  const percent = Math.min((promiseCount / 7) * 100, 100);
+  
+  // Calculate leaf positions
+  const leafPositions = [
+    { top: '20%', left: '40%', rotation: '0deg' },
+    { top: '15%', left: '60%', rotation: '45deg' },
+    { top: '25%', left: '70%', rotation: '90deg' },
+    { top: '40%', left: '75%', rotation: '135deg' },
+    { top: '55%', left: '65%', rotation: '180deg' },
+    { top: '60%', left: '45%', rotation: '225deg' },
+    { top: '50%', left: '25%', rotation: '270deg' },
+    { top: '35%', left: '20%', rotation: '315deg' }
+  ];
+  
+  const html = `
+    <div class="promise-game">
+      <h3 style="color: ${dayData.color}">Grow Our Promise Tree</h3>
+      <p>Each promise you add becomes a leaf on our love tree. Watch it grow!</p>
+      
+      <div class="promise-tree-container">
+        <div class="tree-visual">
+          <div class="tree-trunk-visual"></div>
+          <div class="tree-canvas" id="tree-canvas">
+            ${game.promises.map((promise, index) => `
+              <div class="promise-leaf visible" 
+                   style="
+                     top: ${leafPositions[index].top};
+                     left: ${leafPositions[index].left};
+                     --rotation: ${leafPositions[index].rotation};
+                     background: linear-gradient(135deg, ${dayData.color}40, ${dayData.color}80);
+                     border-color: ${dayData.color};
+                     color: ${dayData.color};
+                   ">
+                <span>${promise}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+        
+        <div class="promise-input-enhanced">
+          <div style="display: flex; gap: 15px; align-items: center;">
+            <input type="text" id="promise-input" placeholder="Type your promise here..." 
+                   style="flex: 1; padding: 18px 25px; border-radius: 50px; border: 3px solid ${dayData.color}; font-size: 1.2rem;">
+            <button onclick="addPromiseToTreeEnhanced(${dayData.id})" 
+                    style="background: ${dayData.color}; color: white; border: none; padding: 18px 35px; border-radius: 50px; font-size: 1.2rem; cursor: pointer;">
+              <i class="fas fa-leaf"></i> Add Leaf
+            </button>
+          </div>
+        </div>
+        
+        <div class="promise-suggestions" style="margin: 25px 0;">
+          <p style="color: ${dayData.color}; font-weight: bold; margin-bottom: 15px;">
+            Need inspiration? Try these promises:
+          </p>
+          <div style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: center;">
+            ${game.promiseSuggestions.map(suggestion => `
+              <button class="suggestion-btn" onclick="addSuggestedPromiseEnhanced('${suggestion}', ${dayData.id})" 
+                      style="
+                        background: white;
+                        border: 2px solid ${dayData.color};
+                        color: ${dayData.color};
+                        padding: 12px 20px;
+                        border-radius: 30px;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        font-size: 1.1rem;
+                      "
+                      onmouseover="this.style.background='${dayData.color}'; this.style.color='white'"
+                      onmouseout="this.style.background='white'; this.style.color='${dayData.color}'">
+                ${suggestion}
+              </button>
+            `).join('')}
+          </div>
+        </div>
+        
+        <div class="promise-counter" style="
+          background: white;
+          border-radius: 20px;
+          padding: 25px;
+          border: 3px solid ${dayData.color};
+          max-width: 400px;
+          margin: 30px auto;
+          text-align: center;
+        ">
+          <div style="font-size: 1.5rem; color: ${dayData.color}; font-weight: bold; margin-bottom: 15px;">
+            Promises: <span id="promise-count">${promiseCount}</span>/7
+          </div>
+          
+          <div class="tree-progress">
+            <div class="progress-ring" style="
+              width: 120px;
+              height: 120px;
+              margin: 0 auto;
+              position: relative;
+            ">
+              <div class="ring-fill" style="
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+                background: conic-gradient(
+                  ${dayData.color} 0% ${percent}%,
+                  #eee ${percent}% 100%
+                );
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              ">
+                <div style="
+                  width: 80px;
+                  height: 80px;
+                  background: white;
+                  border-radius: 50%;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  font-size: 1.8rem;
+                  color: ${dayData.color};
+                  font-weight: bold;
+                ">
+                  ${Math.round(percent)}%
+                </div>
+              </div>
+            </div>
+            <p style="color: ${dayData.color}; margin-top: 15px; font-weight: bold;">
+              ${promiseCount >= 7 ? '🌳 Our promise tree is fully grown! 🌳' : 'Add more promises to grow our tree!'}
+            </p>
+          </div>
+        </div>
+        
+        ${promiseCount >= 7 ? `
+          <button class="btn" onclick="completeValentineDay(${dayData.id})" 
+                  style="background: ${dayData.color}; margin-top: 20px; padding: 20px 45px; font-size: 1.4rem;">
+            <i class="fas fa-heart"></i> Seal Our Promises Forever
+          </button>
+        ` : ''}
+      </div>
+    </div>
+  `;
+  
+  document.getElementById('interactive-game').innerHTML = html;
+}
+
+function addPromiseToTreeEnhanced(dayId) {
+  const input = document.getElementById('promise-input');
+  const promise = input.value.trim();
+  
+  if (!promise) {
+    showToast("Please type a promise first!");
+    input.focus();
+    return;
+  }
+  
+  if (promise.length > 50) {
+    showToast("Promise is too long! Keep it short and sweet.");
+    input.focus();
+    return;
+  }
+  
+  addSuggestedPromiseEnhanced(promise, dayId);
+  input.value = '';
+  input.focus();
+}
+
+function addSuggestedPromiseEnhanced(promise, dayId) {
+  const dayData = valentineWeekData.days.find(d => d.id === dayId);
+  if (!dayData) return;
+  
+  // Add promise if not already there and limit to 7
+  if (!dayData.interactive.promises.includes(promise) && dayData.interactive.promises.length < 7) {
+    dayData.interactive.promises.push(promise);
+    playSound('leaf');
+    showToast(`🌿 Promise added: "${promise}"`);
+    
+    // Reload game to show new leaf
+    loadPromiseGameEnhanced(dayData);
+    
+    // If we have 7 promises, offer to complete day
+    if (dayData.interactive.promises.length === 7) {
+      setTimeout(() => {
+        showToast("🌳 Our promise tree is fully grown! Beautiful!");
+      }, 500);
+    }
+  } else if (dayData.interactive.promises.length >= 7) {
+    showToast("Our promise tree is full! You can complete the day now.");
+  } else {
+    showToast("That promise is already on our tree!");
+  }
+}
+
+// 7. Hug Day - Enhanced Visuals
+function loadHugGameEnhanced(dayData) {
+  const game = dayData.interactive;
+  const warmthPercent = game.warmthLevel;
+  
+  const html = `
+    <div class="hug-game">
+      <h3 style="color: ${dayData.color}">Virtual Hug Simulator</h3>
+      <p>Give different types of hugs to warm my heart! Each hug adds warmth.</p>
+      
+      <div class="hug-simulator-enhanced">
+        <div class="hug-characters-enhanced" id="hug-characters">
+          <div class="hug-character you">
+            YOU
+            <div class="hug-arms left" style="--arm-color: ${dayData.color}; --hug-angle: -30deg;"></div>
+          </div>
+          
+          <div class="hug-character me">
+            ME
+            <div class="hug-arms right" style="--arm-color: ${dayData.color}; --hug-angle: 30deg;"></div>
+          </div>
+        </div>
+        
+        <div class="hug-types-enhanced">
+          <div class="hug-type-card bear" onclick="giveHugEnhanced('bear', ${dayData.id})">
+            <div class="hug-type-icon">🐻</div>
+            <h4 style="color: #8B4513;">Bear Hug</h4>
+            <p style="color: #666; font-size: 0.9rem;">Strong, warm, and comforting</p>
+            <div style="margin-top: 10px; color: #8B4513; font-weight: bold;">+3 Warmth</div>
+          </div>
+          
+          <div class="hug-type-card side" onclick="giveHugEnhanced('side', ${dayData.id})">
+            <div class="hug-type-icon">👫</div>
+            <h4 style="color: #3498db;">Side Hug</h4>
+            <p style="color: #666; font-size: 0.9rem;">Casual, sweet, and friendly</p>
+            <div style="margin-top: 10px; color: #3498db; font-weight: bold;">+2 Warmth</div>
+          </div>
+          
+          <div class="hug-type-card surprise" onclick="giveHugEnhanced('surprise', ${dayData.id})">
+            <div class="hug-type-icon">🎁</div>
+            <h4 style="color: #9b59b6;">Surprise Hug</h4>
+            <p style="color: #666; font-size: 0.9rem;">Unexpected and exciting</p>
+            <div style="margin-top: 10px; color: #9b59b6; font-weight: bold;">+4 Warmth</div>
+          </div>
+        </div>
+        
+        <div style="text-align: center; margin: 20px 0; color: #666; font-style: italic;">
+          Click any hug type to give a virtual hug!
+        </div>
+      </div>
+      
+      <div class="hug-stats" style="max-width: 600px; margin: 30px auto;">
+        <div class="hug-counter" style="
+          background: white;
+          border-radius: 20px;
+          padding: 20px;
+          border: 3px solid ${dayData.color};
+          text-align: center;
+          margin-bottom: 25px;
+        ">
+          <div style="font-size: 1.5rem; color: ${dayData.color}; font-weight: bold;">
+            Hugs Given: <span id="hugs-given">${game.hugsGiven}</span>/12
+          </div>
+          <div style="margin-top: 10px; color: #666;">
+            ${game.hugsGiven >= game.targetHugs ? '🏆 Hug Master Achieved!' : 'Keep hugging to warm my heart!'}
+          </div>
+        </div>
+        
+        <div style="margin-bottom: 25px;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+            <span style="color: #3498db; font-weight: bold;">Cool</span>
+            <span style="color: ${dayData.color}; font-weight: bold;">Warmth: ${warmthPercent}%</span>
+            <span style="color: #e74c3c; font-weight: bold;">Hot!</span>
+          </div>
+          
+          <div class="warmth-meter-enhanced">
+            <div class="warmth-fill-enhanced" id="warmth-fill" style="width: ${warmthPercent}%"></div>
+          </div>
+        </div>
+        
+        ${game.hugsGiven >= game.targetHugs ? `
+          <div class="achievement" id="hug-achievement" style="
+            background: linear-gradient(45deg, ${dayData.color}, #FF8C00);
+            color: white;
+            padding: 20px;
+            border-radius: 20px;
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+          ">
+            🏆 HUG MASTER! My heart is completely warm! 🏆
+          </div>
+          
+          <button class="btn" onclick="completeValentineDay(${dayData.id})" 
+                  style="background: ${dayData.color}; margin-top: 25px; width: 100%; padding: 20px;">
+            <i class="fas fa-heart"></i> Seal with a Final Warm Hug
+          </button>
+        ` : ''}
+      </div>
+    </div>
+  `;
+  
+  document.getElementById('interactive-game').innerHTML = html;
+}
+
+function giveHugEnhanced(type, dayId) {
+  const dayData = valentineWeekData.days.find(d => d.id === dayId);
+  if (!dayData) return;
+  
+  const game = dayData.interactive;
+  
+  // Calculate warmth based on hug type
+  let warmthIncrease = 0;
+  const messages = {
+    bear: { message: "🐻 A strong, comforting bear hug! So warm!", warmth: 3 },
+    side: { message: "👫 A sweet, casual side hug! Lovely!", warmth: 2 },
+    surprise: { message: "🎁 A surprise hug from behind! Exciting!", warmth: 4 }
+  };
+  
+  const hugData = messages[type] || { message: "💖 A loving hug!", warmth: 2 };
+  
+  game.hugsGiven = Math.min(game.hugsGiven + 1, game.targetHugs);
+  game.warmthLevel = Math.min(game.warmthLevel + hugData.warmth, 100);
+  game.lastHugType = type;
+  
+  // Animate hug
+  animateHugEnhanced(type);
+  
+  // Update UI
+  const hugsGivenElement = document.getElementById('hugs-given');
+  const warmthFillElement = document.getElementById('warmth-fill');
+  
+  if (hugsGivenElement) hugsGivenElement.textContent = game.hugsGiven;
+  if (warmthFillElement) {
+    warmthFillElement.style.width = `${game.warmthLevel}%`;
+  }
+  
+  // Show hug message
+  showToast(hugData.message);
+  playSound('hug');
+  
+  // Check if target reached
+  if (game.hugsGiven >= game.targetHugs) {
+    setTimeout(() => {
+      loadHugGameEnhanced(dayData);
+      showToast("🏆 You've become a Hug Master! My heart is overflowing with warmth!");
+    }, 800);
+  }
+}
+
+function animateHugEnhanced(type) {
+  const characters = document.getElementById('hug-characters');
+  if (!characters) return;
+  
+  // Add hugging class for animation
+  characters.classList.add('hugging');
+  
+  // Remove after animation
+  setTimeout(() => {
+    characters.classList.remove('hugging');
+  }, 1000);
+  
+  // Specific animation based on hug type
+  const hugAnimations = {
+    bear: 'bounce',
+    side: 'slide',
+    surprise: 'pop'
+  };
+  
+  characters.style.animation = `${hugAnimations[type] || 'pulse'} 0.5s ease`;
+}
+
+// 8. Kiss Day - 4 Kiss Types
+function loadKissGameEnhanced(dayData) {
+  const game = dayData.interactive;
+  const collected = game.kisses.filter(k => k.unlocked).length;
+  const allUnlocked = collected === game.kisses.length;
+  
+  const html = `
+    <div class="kiss-game">
+      <h3 style="color: ${dayData.color}">Collect Kiss Memories</h3>
+      <p>Unlock all 4 types of kisses to complete our Valentine's collection!</p>
+      
+      <div class="kiss-collection-enhanced">
+        ${game.kisses.map(kiss => `
+          <div class="kiss-card-enhanced ${kiss.type} ${kiss.unlocked ? 'unlocked' : ''}" 
+               onclick="${!kiss.unlocked ? `unlockKissEnhanced('${kiss.type}', ${dayData.id})` : ''}"
+               style="cursor: ${kiss.unlocked ? 'default' : 'pointer'};">
+            
+            <div class="kiss-icon-large">${kiss.icon}</div>
+            
+            <div>
+              <h4 style="color: ${kiss.unlocked ? dayData.color : '#5a3d5c'}; margin: 10px 0;">
+                ${kiss.name}
+              </h4>
+              <p style="color: #666; margin-bottom: 15px;">${kiss.description}</p>
+              
+              <div class="kiss-intensity ${kiss.type}" style="
+                display: inline-block;
+                padding: 6px 15px;
+                border-radius: 20px;
+                font-size: 0.9rem;
+                font-weight: bold;
+              ">
+                ${kiss.intensity}
+              </div>
+            </div>
+            
+            <div style="margin-top: 20px;">
+              ${kiss.unlocked ? `
+                <div style="color: ${dayData.color}; font-weight: bold; font-size: 1.2rem;">
+                  ✓ UNLOCKED
+                </div>
+              ` : `
+                <div style="color: #888; font-size: 0.9rem;">
+                  Click to unlock<br>
+                  <small>(${kiss.requirement.replace(/_/g, ' ')})</small>
+                </div>
+              `}
+            </div>
+          </div>
+        `).join('')}
+      </div>
+      
+      <div style="max-width: 600px; margin: 40px auto; text-align: center;">
+        <div style="
+          background: white;
+          border-radius: 20px;
+          padding: 25px;
+          border: 3px solid ${dayData.color};
+          margin-bottom: 25px;
+        ">
+          <div style="font-size: 1.5rem; color: ${dayData.color}; font-weight: bold; margin-bottom: 10px;">
+            Collection: <span id="kisses-collected">${collected}</span>/4
+          </div>
+          
+          <div style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
+            ${game.kisses.map((kiss, i) => `
+              <div style="
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                background: ${kiss.unlocked ? dayData.color : '#eee'};
+                color: ${kiss.unlocked ? 'white' : '#999'};
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.2rem;
+                border: 2px solid ${dayData.color};
+              ">
+                ${kiss.unlocked ? '✓' : i + 1}
+              </div>
+            `).join('')}
+          </div>
+        </div>
+        
+        <div class="heartbeat-visualizer" style="margin: 30px 0;">
+          <div class="heartbeat-line" style="
+            width: 100%;
+            height: 4px;
+            background: ${dayData.color}20;
+            border-radius: 2px;
+            position: relative;
+            overflow: hidden;
+          ">
+            <div class="beat" style="
+              position: absolute;
+              width: 20px;
+              height: 100%;
+              background: ${dayData.color};
+              border-radius: 2px;
+              animation: heartbeat 1.5s infinite;
+            "></div>
+            <div class="beat" style="
+              position: absolute;
+              width: 20px;
+              height: 100%;
+              background: ${dayData.color};
+              border-radius: 2px;
+              animation: heartbeat 1.5s infinite;
+              animation-delay: 0.5s;
+            "></div>
+            <div class="beat" style="
+              position: absolute;
+              width: 20px;
+              height: 100%;
+              background: ${dayData.color};
+              border-radius: 2px;
+              animation: heartbeat 1.5s infinite;
+              animation-delay: 1s;
+            "></div>
+          </div>
+          <p style="color: ${dayData.color}; margin-top: 15px; font-style: italic;">
+            Our heartbeat syncs with each collected kiss 💓
+          </p>
+        </div>
+        
+        ${allUnlocked ? `
+          <div class="final-unlock" id="final-unlock" style="
+            background: linear-gradient(135deg, ${dayData.color}, #c0392b);
+            color: white;
+            border-radius: 25px;
+            padding: 40px;
+            margin-top: 30px;
+            position: relative;
+            overflow: hidden;
+          ">
+            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif') center/cover; opacity: 0.1;"></div>
+            
+            <div style="position: relative; z-index: 2;">
+              <h3 style="font-size: 2.5rem; margin-bottom: 20px;">💖 ALL KISSES COLLECTED! 💖</h3>
+              <p style="font-size: 1.3rem; line-height: 1.6; margin-bottom: 25px;">
+                You've unlocked every type of kiss in our collection!<br>
+                From romantic to passionate, each kiss tells our love story.
+              </p>
+              
+              <button class="btn celebration-btn" onclick="showCompleteWeekConfirmation()" 
+                      style="
+                        background: white;
+                        color: ${dayData.color};
+                        border: none;
+                        padding: 18px 45px;
+                        font-size: 1.4rem;
+                        font-weight: bold;
+                        margin-top: 20px;
+                      ">
+                Complete Valentine's Week <i class="fas fa-trophy"></i>
+              </button>
+            </div>
+          </div>
+        ` : ''}
+      </div>
+    </div>
+  `;
+  
+  document.getElementById('interactive-game').innerHTML = html;
+  
+  // Create fireworks if all unlocked
+  if (allUnlocked) {
+    createFireworksEnhanced();
+  }
+}
+
+function unlockKissEnhanced(type, dayId) {
+  const dayData = valentineWeekData.days.find(d => d.id === dayId);
+  if (!dayData) return;
+  
+  const kiss = dayData.interactive.kisses.find(k => k.type === type);
+  if (!kiss || kiss.unlocked) return;
+  
+  kiss.unlocked = true;
+  
+  // Show unlock message
+  const messages = {
+    romantic: "🌹 Romantic kiss unlocked! Sweet and full of love",
+    passionate: "🔥 Passionate kiss unlocked! Deep and intense",
+    playful: "😘 Playful kiss unlocked! Fun and teasing", 
+    tender: "💖 Tender kiss unlocked! Gentle and caring"
+  };
+  
+  playSound('kiss');
+  showToast(messages[type] || "💖 Kiss unlocked!");
+  
+  // Reload game to show updated state
+  setTimeout(() => {
+    loadKissGameEnhanced(dayData);
+    
+    // Check if all kisses collected
+    const allUnlocked = dayData.interactive.kisses.every(k => k.unlocked);
+    if (allUnlocked) {
+      dayData.interactive.allUnlocked = true;
+      setTimeout(() => {
+        showToast("🎉 All kisses collected! Our love is complete in every way!");
+      }, 1000);
+    }
+  }, 500);
+}
+
+function createFireworksEnhanced() {
+  const container = document.querySelector('.final-unlock');
+  if (!container) return;
+  
+  // Create multiple fireworks
+  for (let i = 0; i < 15; i++) {
+    const firework = document.createElement('div');
+    firework.style.cssText = `
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: ${['#e74c89', '#ff6b8b', '#ffccd5', '#9b59b6'][i % 4]};
+      border-radius: 50%;
+      top: ${Math.random() * 100}%;
+      left: ${Math.random() * 100}%;
+      animation: fireworkExplode 1s ease-out infinite;
+      animation-delay: ${i * 0.2}s;
+      z-index: 1;
+    `;
+    container.appendChild(firework);
+  }
+}
+
+// 9. Navigation Fixes
+function showCompleteWeekConfirmation() {
+  const modal = document.createElement('div');
+  modal.className = 'confirmation-modal active';
+  modal.innerHTML = `
+    <div class="confirmation-content">
+      <div class="confirmation-icon" style="font-size: 4rem; color: #e74c89; margin-bottom: 20px;">
+        💖
+      </div>
+      <h2 style="color: #e74c89; margin-bottom: 15px;">Complete Valentine's Week?</h2>
+      <p style="font-size: 1.2rem; line-height: 1.6; color: #5a3d5c; margin-bottom: 25px;">
+        Are you ready to complete this beautiful journey through Valentine's Week?<br>
+        You can always revisit any day from the Week Hub.
+      </p>
+      
+      <div class="confirmation-buttons">
+        <button class="confirmation-btn confirm" onclick="completeEntireWeek()">
+          Yes, Complete Week! 🎉
+        </button>
+        <button class="confirmation-btn cancel" onclick="closeConfirmation()">
+          Not Yet
+        </button>
+      </div>
+    </div>
+  `;
+  
+  document.body.appendChild(modal);
+}
+
+function completeEntireWeek() {
+  // Mark all days as completed
+  valentineWeekData.days.forEach(day => {
+    if (!valentineWeekData.progress.includes(day.id)) {
+      valentineWeekData.progress.push(day.id);
+    }
+  });
+  
+  localStorage.setItem('valentineProgress', JSON.stringify(valentineWeekData.progress));
+  
+  // Close modal and go to celebration page
+  closeConfirmation();
+  
+  // Show celebration and redirect
+  setTimeout(() => {
+    showToast("🎉 Valentine's Week Completed! What an amazing journey!");
+    setTimeout(() => {
+      goToPage(17); // Go to video page
+    }, 1500);
+  }, 500);
+}
+
+function closeConfirmation() {
+  const modal = document.querySelector('.confirmation-modal');
+  if (modal) {
+    modal.style.animation = 'fadeOut 0.3s ease forwards';
+    setTimeout(() => {
+      if (modal.parentNode) {
+        modal.parentNode.removeChild(modal);
+      }
+    }, 300);
+  }
+}
+
+// Enhanced navigation functions
+function prevValentineDayEnhanced() {
+  if (valentineWeekData.currentDay > 1) {
+    goToValentineDay(valentineWeekData.currentDay - 1);
+  }
+}
+
+function nextValentineDayEnhanced() {
+  if (valentineWeekData.currentDay < 7) {
+    goToValentineDay(valentineWeekData.currentDay + 1);
+  } else {
+    showCompleteWeekConfirmation();
+  }
+}
+
+// Update the generateDayHTML function with enhanced navigation
+function generateDayHTMLEnhanced(dayData) {
   const isCompleted = valentineWeekData.progress.includes(dayData.id);
   
   return `
     <!-- Day Header -->
     <div class="day-header">
       <button class="back-to-hub" onclick="goToPage(9)">
-        <i class="fas fa-calendar"></i> Back to Week
+        <i class="fas fa-calendar"></i> Back to Week Hub
       </button>
       
       <div class="day-title-container">
@@ -1848,7 +3007,7 @@ function generateDayHTML(dayData) {
         Day <span style="color: ${dayData.color}">${dayData.id}</span>/7
         <div class="mini-progress">
           ${Array(7).fill().map((_, i) => 
-            i < dayData.id ? '●' : '○'
+            i + 1 === dayData.id ? '●' : i + 1 < dayData.id ? '✓' : '○'
           ).join('')}
         </div>
       </div>
@@ -1897,970 +3056,186 @@ function generateDayHTML(dayData) {
       ${isCompleted ? `
         <div class="memory-unlocked">
           <i class="fas fa-lock-open"></i>
-          <span>Day completed! Memory unlocked in your heart</span>
+          <span>Day completed! Memory saved forever in your heart</span>
         </div>
       ` : ''}
     </div>
     
-    <!-- Navigation -->
-    <div class="day-navigation">
-      <button class="btn prev-day-btn" onclick="prevValentineDay()" ${dayData.id === 1 ? 'disabled style="opacity:0.5"' : ''}>
-        <i class="fas fa-arrow-left"></i> Previous Day
+    <!-- Enhanced Navigation -->
+    <div class="day-navigation-enhanced">
+      <button class="btn nav-btn prev-day-btn" onclick="prevValentineDayEnhanced()" 
+              ${dayData.id === 1 ? 'disabled' : ''}>
+        <i class="fas fa-arrow-left"></i> Day ${dayData.id - 1 || ''}
       </button>
       
       <div class="day-controls">
-        <button class="sound-btn" onclick="toggleDaySound(${dayData.id})">
+        <button class="sound-btn" onclick="toggleDaySound(${dayData.id})" title="Toggle sound">
           <i class="fas fa-music"></i>
         </button>
-        <button class="hint-btn" onclick="showDayHint(${dayData.id})">
+        <button class="hint-btn" onclick="showDayHintEnhanced(${dayData.id})" title="Get hint">
           <i class="fas fa-lightbulb"></i>
         </button>
-        <button class="save-btn" onclick="completeValentineDay(${dayData.id})">
+        <button class="save-btn" onclick="completeValentineDay(${dayData.id})" 
+                ${isCompleted ? 'disabled style="opacity:0.5"' : ''} title="Complete day">
           <i class="fas fa-bookmark"></i> Complete Day
         </button>
       </div>
       
-      <button class="btn next-day-btn" onclick="nextValentineDay()" ${dayData.id === 7 ? 'onclick="goToPage(17)"' : ''}>
-        ${dayData.id === 7 ? 'Complete Week <i class="fas fa-trophy"></i>' : 'Next Day <i class="fas fa-arrow-right"></i>'}
+      <button class="btn nav-btn next-day-btn ${dayData.id === 7 ? 'complete-week-btn' : ''}" 
+              onclick="${dayData.id === 7 ? 'showCompleteWeekConfirmation()' : 'nextValentineDayEnhanced()'}">
+        ${dayData.id === 7 ? 'Complete Week <i class="fas fa-trophy"></i>' : `Day ${dayData.id + 1} <i class="fas fa-arrow-right"></i>`}
       </button>
     </div>
   `;
 }
 
-function initializeDayGame(dayData) {
+// Enhanced hint function
+function showDayHintEnhanced(dayId) {
+  const hints = [
+    "💡 Hint: Click all 7 roses to complete the garden!",
+    "💡 Hint: Choose a proposal scenario to see my romantic response!",
+    "💡 Hint: Unwrap all 9 chocolates for sweet surprises!",
+    "💡 Hint: Collect all 3 accessories to dress up our teddy!",
+    "💡 Hint: Add 7 promises to make our love tree bloom!",
+    "💡 Hint: Give 12 hugs to become a Hug Master!",
+    "💡 Hint: Unlock all 4 kiss types to complete the collection!"
+  ];
+  
+  showToast(hints[dayId - 1] || "💡 Explore everything on this page to complete the day!");
+}
+
+// Sound effects
+function playSound(type) {
+  // In a real implementation, you'd play actual sounds
+  console.log(`Playing ${type} sound`);
+}
+
+// Update the initializeDayGame function to use enhanced versions
+function initializeDayGameEnhanced(dayData) {
   const gameArea = document.getElementById('interactive-game');
   
   switch(dayData.interactive.type) {
     case 'rose_garden':
-      loadRoseGardenGame(dayData);
+      loadRoseGardenGameEnhanced(dayData);
       break;
     case 'proposal_scenarios':
-      loadProposalGame(dayData);
+      loadProposalGameEnhanced(dayData);
       break;
     case 'chocolate_box':
-      loadChocolateGame(dayData);
+      loadChocolateGameEnhanced(dayData);
       break;
     case 'teddy_dressup':
-      loadTeddyGame(dayData);
+      loadTeddyGameEnhanced(dayData);
       break;
     case 'promise_tree':
-      loadPromiseGame(dayData);
+      loadPromiseGameEnhanced(dayData);
       break;
     case 'hug_simulator':
-      loadHugGame(dayData);
+      loadHugGameEnhanced(dayData);
       break;
     case 'kiss_collection':
-      loadKissGame(dayData);
+      loadKissGameEnhanced(dayData);
       break;
   }
 }
 
-// Day 1: Rose Garden Game
-function loadRoseGardenGame(dayData) {
-  const game = dayData.interactive;
-  const html = `
-    <div class="rose-garden-game">
-      <h3 style="color: ${dayData.color}">Find the 7 Hidden Roses</h3>
-      <p>Each rose holds a sweet message about us. Click to find them!</p>
-      
-      <div class="garden-container">
-        <div class="rose-counter" style="border-color: ${dayData.color}">
-          Roses Found: <span id="roses-found">${game.rosesFound}</span>/7
-        </div>
-        
-        <div class="garden-area" id="garden-area">
-          ${Array(game.totalRoses).fill().map((_, i) => `
-            <div class="hidden-rose ${game.rosesFound > i ? 'found' : ''}" 
-                 data-index="${i}" 
-                 onclick="findRose(${i}, ${dayData.id})">
-              <div class="rose-bud"></div>
-            </div>
-          `).join('')}
-        </div>
-        
-        <div class="rose-messages" id="rose-messages">
-          ${game.rosesFound > 0 ? 
-            `<p>"${game.roseMessages[game.rosesFound - 1]}"</p>` : 
-            '<p>Click a rose to reveal a sweet message!</p>'
-          }
-        </div>
-      </div>
-      
-      <div class="garden-progress">
-        <div class="rose-bush">
-          <div class="bush-fill" style="width: ${(game.rosesFound / game.totalRoses) * 100}%"></div>
-        </div>
-        <p>Garden blooms as you find roses! ${game.rosesFound === game.totalRoses ? '🌹 Garden Complete!' : ''}</p>
-      </div>
-    </div>
-  `;
-  
-  document.getElementById('interactive-game').innerHTML = html;
-}
-
-function findRose(index, dayId) {
-  const dayData = valentineWeekData.days.find(d => d.id === dayId);
-  if (!dayData || dayData.interactive.rosesFound > index) return;
-  
-  dayData.interactive.rosesFound = index + 1;
-  
-  // Update UI
-  const roseElement = document.querySelector(`.hidden-rose[data-index="${index}"]`);
-  if (roseElement) {
-    roseElement.classList.add('found');
-    roseElement.style.pointerEvents = 'none';
-  }
-  
-  // Update counter
-  document.getElementById('roses-found').textContent = dayData.interactive.rosesFound;
-  
-  // Show message
-  const messageElement = document.getElementById('rose-messages');
-  if (messageElement) {
-    messageElement.innerHTML = `<p>"${dayData.interactive.roseMessages[index]}"</p>`;
-    messageElement.style.animation = 'fadeIn 0.5s ease';
-  }
-  
-  // Update progress bar
-  const bushFill = document.querySelector('.bush-fill');
-  if (bushFill) {
-    bushFill.style.width = `${(dayData.interactive.rosesFound / dayData.interactive.totalRoses) * 100}%`;
-  }
-  
-  // If all roses found, mark day as completed
-  if (dayData.interactive.rosesFound === dayData.interactive.totalRoses) {
-    setTimeout(() => {
-      completeValentineDay(dayId);
-    }, 1000);
-  }
-}
-
-// Day 2: Proposal Scenarios
-function loadProposalGame(dayData) {
-  const game = dayData.interactive;
-  const html = `
-    <div class="proposal-game">
-      <h3 style="color: ${dayData.color}">How Would You Like Me To Propose?</h3>
-      <p>Choose a scenario to explore our imaginary proposals!</p>
-      
-      <div class="scenarios-container">
-        ${game.scenarios.map(scenario => `
-          <div class="scenario-card ${game.selectedScenario === scenario.type ? 'selected' : ''}" 
-               data-type="${scenario.type}" 
-               onclick="chooseProposalScenario('${scenario.type}', ${dayData.id})">
-            <div class="scenario-icon">${scenario.icon}</div>
-            <h4>${scenario.title}</h4>
-            <p>${scenario.description}</p>
-          </div>
-        `).join('')}
-      </div>
-      
-      ${game.selectedScenario ? `
-        <div class="scenario-result" id="scenario-result">
-          <h4>If I proposed ${game.selectedScenario === 'romantic' ? 'romantically' : game.selectedScenario === 'funny' ? 'in our funny way' : 'with a surprise'}:</h4>
-          <p>I would make sure it's perfect for you, because you deserve nothing less than magical moments that take your breath away.</p>
-          <p><strong>But the truth is...</strong> I want to propose to you every day, in every way, because every moment with you feels like a "yes" to forever.</p>
-          
-          ${!valentineWeekData.progress.includes(dayData.id) ? `
-            <button class="btn" onclick="completeValentineDay(${dayData.id})" style="background: ${dayData.color}">
-              <i class="fas fa-heart"></i> Accept All My Proposals
-            </button>
-          ` : ''}
-        </div>
-      ` : ''}
-    </div>
-  `;
-  
-  document.getElementById('interactive-game').innerHTML = html;
-}
-
-function chooseProposalScenario(type, dayId) {
-  const dayData = valentineWeekData.days.find(d => d.id === dayId);
-  if (!dayData) return;
-  
-  dayData.interactive.selectedScenario = type;
-  loadProposalGame(dayData);
-}
-
-// Day 3: Chocolate Box
-function loadChocolateGame(dayData) {
-  const game = dayData.interactive;
-  const html = `
-    <div class="chocolate-game">
-      <h3 style="color: ${dayData.color}">Unwrap Sweet Surprises</h3>
-      <p>Click chocolates to reveal sweet messages about us!</p>
-      
-      <div class="chocolate-box">
-        <div class="box-lid">
-          <div class="ribbon">For My Sweetheart</div>
-        </div>
-        
-        <div class="chocolate-grid" id="chocolate-grid">
-          ${Array(game.totalChocolates).fill().map((_, i) => `
-            <div class="chocolate-piece ${game.chocolatesOpened > i ? 'opened' : ''}" 
-                 data-index="${i}" 
-                 onclick="unwrapChocolate(${i}, ${dayData.id})">
-              <div class="wrapper">
-                <div class="chocolate-top"></div>
-                <div class="chocolate-message">
-                  <p>${game.messages[i]}</p>
-                </div>
-              </div>
-            </div>
-          `).join('')}
-        </div>
-      </div>
-      
-      <div class="chocolate-counter">
-        Unwrapped: <span id="chocolates-opened">${game.chocolatesOpened}</span>/9
-        <div class="sweetness-meter">
-          <div class="meter-fill" id="sweetness-fill" style="width: ${(game.chocolatesOpened / game.totalChocolates) * 100}%"></div>
-        </div>
-      </div>
-      
-      ${game.chocolatesOpened === game.totalChocolates ? `
-        <div class="memory-unlocked" style="margin-top: 20px;">
-          <i class="fas fa-crown"></i>
-          <span>All chocolates unwrapped! You're my sweetest treasure!</span>
-        </div>
-      ` : ''}
-    </div>
-  `;
-  
-  document.getElementById('interactive-game').innerHTML = html;
-}
-
-function unwrapChocolate(index, dayId) {
-  const dayData = valentineWeekData.days.find(d => d.id === dayId);
-  if (!dayData || dayData.interactive.chocolatesOpened > index) return;
-  
-  dayData.interactive.chocolatesOpened = index + 1;
-  
-  // Update UI
-  const chocolateElement = document.querySelector(`.chocolate-piece[data-index="${index}"]`);
-  if (chocolateElement) {
-    chocolateElement.classList.add('opened');
-    chocolateElement.style.pointerEvents = 'none';
-    
-    // Show message with animation
-    const messageElement = chocolateElement.querySelector('.chocolate-message');
-    if (messageElement) {
-      messageElement.style.display = 'flex';
-      messageElement.style.animation = 'fadeIn 0.5s ease';
-    }
-  }
-  
-  // Update counter
-  document.getElementById('chocolates-opened').textContent = dayData.interactive.chocolatesOpened;
-  
-  // Update sweetness meter
-  const sweetnessFill = document.getElementById('sweetness-fill');
-  if (sweetnessFill) {
-    sweetnessFill.style.width = `${(dayData.interactive.chocolatesOpened / dayData.interactive.totalChocolates) * 100}%`;
-  }
-  
-  // If all chocolates unwrapped, mark day as completed
-  if (dayData.interactive.chocolatesOpened === dayData.interactive.totalChocolates) {
-    setTimeout(() => {
-      completeValentineDay(dayId);
-    }, 1500);
-  }
-}
-
-// Day 4: Teddy Dress-Up
-function loadTeddyGame(dayData) {
-  const game = dayData.interactive;
-  const collectedCount = game.accessories.filter(a => a.collected).length;
-  
-  const html = `
-    <div class="teddy-game">
-      <h3 style="color: ${dayData.color}">Dress Up Our Teddy</h3>
-      <p>Collect accessories by exploring our memories!</p>
-      
-      <div class="teddy-workspace">
-        <div class="teddy-base">
-          <div class="teddy-body" id="teddy-body">
-            <!-- Teddy base -->
-            <div class="teddy" style="font-size: 5rem; margin: 20px 0;">🧸</div>
-            
-            <!-- Accessories on teddy -->
-            ${game.accessories.filter(a => a.collected).map(accessory => `
-              <div class="teddy-accessory" style="color: ${dayData.color}; font-size: 2rem; margin: 10px;">
-                ${accessory.icon}
-              </div>
-            `).join('')}
-          </div>
-        </div>
-        
-        <div class="accessory-collection">
-          <h4>Collect Accessories (${collectedCount}/3):</h4>
-          <div class="accessory-list">
-            ${game.accessories.map(accessory => `
-              <div class="accessory-item ${accessory.collected ? 'collected' : ''}" 
-                   data-item="${accessory.id}" 
-                   onclick="${!accessory.collected ? `collectAccessory('${accessory.id}', ${dayData.id})` : ''}">
-                <div class="accessory-icon">${accessory.icon}</div>
-                <h5>${accessory.name}</h5>
-                <p>${accessory.collected ? '✓ Collected!' : 
-                    accessory.requirement === 'view_photo' ? 'View all photos to collect' :
-                    accessory.requirement === 'read_message' ? 'Read the love message' :
-                    'Complete the quiz to collect'}</p>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-      </div>
-      
-      ${!game.quizCompleted && collectedCount >= 2 ? `
-        <div class="teddy-quiz" id="teddy-quiz">
-          <h4>Quick Quiz: How well do you know us?</h4>
-          <div class="quiz-question">
-            <p>What's our favorite way to cuddle?</p>
-            <button class="quiz-option" onclick="answerTeddyQuiz(1, ${dayData.id})">Spooning while sleeping</button>
-            <button class="quiz-option" onclick="answerTeddyQuiz(2, ${dayData.id})">Face to face talking</button>
-            <button class="quiz-option" onclick="answerTeddyQuiz(3, ${dayData.id})">Head on chest listening to heartbeat</button>
-          </div>
-        </div>
-      ` : ''}
-      
-      ${collectedCount === 3 ? `
-        <div class="memory-unlocked" style="margin-top: 20px;">
-          <i class="fas fa-award"></i>
-          <span>Teddy fully dressed! Our cuddles are complete! 🧸💖</span>
-        </div>
-      ` : ''}
-    </div>
-  `;
-  
-  document.getElementById('interactive-game').innerHTML = html;
-}
-
-function collectAccessory(accessoryId, dayId) {
-  const dayData = valentineWeekData.days.find(d => d.id === dayId);
-  if (!dayData) return;
-  
-  const accessory = dayData.interactive.accessories.find(a => a.id === accessoryId);
-  if (!accessory || accessory.collected) return;
-  
-  // Check requirement
-  let canCollect = false;
-  switch(accessory.requirement) {
-    case 'view_photo':
-      // Assume user viewed photos if they're interacting
-      canCollect = true;
-      break;
-    case 'read_message':
-      canCollect = true;
-      break;
-    case 'complete_quiz':
-      canCollect = dayData.interactive.quizCompleted;
-      break;
-  }
-  
-  if (canCollect) {
-    accessory.collected = true;
-    loadTeddyGame(dayData);
-    
-    // Check if all accessories collected
-    const allCollected = dayData.interactive.accessories.every(a => a.collected);
-    if (allCollected) {
-      setTimeout(() => {
-        completeValentineDay(dayId);
-      }, 1000);
-    }
-  } else {
-    showToast(`Complete the requirement to collect this accessory!`);
-  }
-}
-
-function answerTeddyQuiz(answer, dayId) {
-  const dayData = valentineWeekData.days.find(d => d.id === dayId);
-  if (!dayData) return;
-  
-  // All answers are "correct" for this sweet quiz
-  dayData.interactive.quizCompleted = true;
-  showToast("Perfect answer! You know us so well! 💖");
-  
-  // Reload the game to show quiz completion
-  setTimeout(() => {
-    loadTeddyGame(dayData);
-  }, 500);
-}
-
-// Day 5: Promise Tree
-function loadPromiseGame(dayData) {
-  const game = dayData.interactive;
-  const promiseCount = game.promises.length;
-  
-  const html = `
-    <div class="promise-game">
-      <h3 style="color: ${dayData.color}">Grow Our Promise Tree</h3>
-      <p>Add promises to make our love tree bloom! Each promise is a leaf.</p>
-      
-      <div class="tree-container">
-        <div class="tree-base" id="tree-base">
-          <!-- Tree trunk -->
-          <div class="tree-trunk" style="background: ${dayData.color}"></div>
-          
-          <!-- Tree leaves (promises) -->
-          <div class="tree-leaves" id="tree-leaves">
-            ${game.promises.map((promise, index) => `
-              <div class="tree-leaf" style="
-                transform: rotate(${index * 15}deg);
-                animation-delay: ${index * 0.1}s;
-                background: ${dayData.color}40;
-                border-color: ${dayData.color};
-              ">
-                <span>${promise}</span>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-        
-        <div class="promise-input">
-          <input type="text" id="promise-input" placeholder="Type your promise here...">
-          <button onclick="addPromiseToTree(${dayData.id})" style="background: ${dayData.color}">
-            <i class="fas fa-leaf"></i> Add Leaf
-          </button>
-        </div>
-        
-        <div class="promise-suggestions">
-          <p>Need inspiration? Try these:</p>
-          <div class="suggestion-buttons">
-            ${game.promiseSuggestions.map(suggestion => `
-              <button class="suggestion-btn" onclick="addSuggestedPromise('${suggestion}', ${dayData.id})" 
-                      style="border-color: ${dayData.color}; color: ${dayData.color}">
-                ${suggestion}
-              </button>
-            `).join('')}
-          </div>
-        </div>
-      </div>
-      
-      <div class="promise-counter" style="border-color: ${dayData.color}">
-        Promises: <span id="promise-count">${promiseCount}</span>
-        <div class="tree-progress">
-          <div class="progress-ring">
-            <div class="ring-fill" id="ring-fill" style="
-              background: conic-gradient(${dayData.color} 0% ${(promiseCount / 7) * 100}%, #eee ${(promiseCount / 7) * 100}% 100%);
-            "></div>
-          </div>
-          <p>${promiseCount >= 7 ? '🌳 Tree fully bloomed!' : 'Add more promises to grow!'}</p>
-        </div>
-      </div>
-      
-      ${promiseCount >= 7 ? `
-        <button class="btn" onclick="completeValentineDay(${dayData.id})" style="background: ${dayData.color}; margin-top: 20px;">
-          <i class="fas fa-heart"></i> Seal Our Promises
-        </button>
-      ` : ''}
-    </div>
-  `;
-  
-  document.getElementById('interactive-game').innerHTML = html;
-  
-  // Add leaf animations
-  setTimeout(() => {
-    document.querySelectorAll('.tree-leaf').forEach(leaf => {
-      leaf.style.opacity = '1';
-      leaf.style.transform += ' scale(1)';
-    });
-  }, 100);
-}
-
-function addPromiseToTree(dayId) {
-  const input = document.getElementById('promise-input');
-  const promise = input.value.trim();
-  
-  if (!promise) {
-    showToast("Please type a promise first!");
-    input.focus();
-    return;
-  }
-  
-  addSuggestedPromise(promise, dayId);
-  input.value = '';
-  input.focus();
-}
-
-function addSuggestedPromise(promise, dayId) {
-  const dayData = valentineWeekData.days.find(d => d.id === dayId);
-  if (!dayData) return;
-  
-  // Add promise if not already there
-  if (!dayData.interactive.promises.includes(promise)) {
-    dayData.interactive.promises.push(promise);
-    showToast(`Promise added: "${promise}"`);
-    loadPromiseGame(dayData);
-    
-    // If we have enough promises, offer to complete day
-    if (dayData.interactive.promises.length >= 7) {
-      setTimeout(() => {
-        showToast("Our promise tree is fully grown! 🌳");
-      }, 500);
-    }
-  } else {
-    showToast("That promise is already on our tree!");
-  }
-}
-
-// Day 6: Hug Simulator
-function loadHugGame(dayData) {
-  const game = dayData.interactive;
-  const warmthPercent = (game.warmthLevel / 100) * 100;
-  
-  const html = `
-    <div class="hug-game">
-      <h3 style="color: ${dayData.color}">Virtual Hug Simulator</h3>
-      <p>Give hugs to fill our warmth meter! Hold for extra love!</p>
-      
-      <div class="hug-simulator">
-        <div class="hug-characters">
-          <div class="character you">
-            <div class="avatar" style="background: ${dayData.color}">You</div>
-            <div class="arms" id="your-arms"></div>
-          </div>
-          
-          <div class="character me">
-            <div class="avatar" style="background: ${dayData.color}">Me</div>
-            <div class="arms" id="my-arms"></div>
-          </div>
-        </div>
-        
-        <div class="hug-controls">
-          <div class="hug-types">
-            <button class="hug-type-btn" data-type="bear" onclick="giveHug('bear', ${dayData.id})">
-              <div class="hug-icon">🐻</div>
-              Bear Hug
-            </button>
-            <button class="hug-type-btn" data-type="side" onclick="giveHug('side', ${dayData.id})">
-              <div class="hug-icon">👫</div>
-              Side Hug
-            </button>
-            <button class="hug-type-btn" data-type="surprise" onclick="giveHug('surprise', ${dayData.id})">
-              <div class="hug-icon">🎁</div>
-              Surprise Hug
-            </button>
-          </div>
-          
-          <div class="hug-timer" id="hug-timer">
-            Hold hug for <span id="timer-count">3</span>s for extra warmth!
-          </div>
-        </div>
-      </div>
-      
-      <div class="hug-stats">
-        <div class="hug-counter" style="border-color: ${dayData.color}">
-          Hugs Given: <span id="hugs-given">${game.hugsGiven}</span>/12
-        </div>
-        
-        <div class="warmth-meter">
-          <div class="warmth-fill" id="warmth-fill" style="width: ${warmthPercent}%; background: ${dayData.color}"></div>
-          <div class="meter-labels">
-            <span>Cool</span>
-            <span>Warm</span>
-            <span style="color: ${dayData.color}">Hot!</span>
-          </div>
-        </div>
-        
-        ${game.hugsGiven >= game.targetHugs ? `
-          <div class="achievement" id="hug-achievement" style="background: ${dayData.color}">
-            🏆 Hug Master Unlocked! You've warmed my heart completely!
-          </div>
-        ` : ''}
-      </div>
-      
-      ${game.hugsGiven >= game.targetHugs ? `
-        <button class="btn" onclick="completeValentineDay(${dayData.id})" style="background: ${dayData.color}; margin-top: 20px;">
-          <i class="fas fa-heart"></i> Seal with a Warm Hug
-        </button>
-      ` : ''}
-    </div>
-  `;
-  
-  document.getElementById('interactive-game').innerHTML = html;
-  
-  // Animate arms if hugging
-  if (game.hugsGiven > 0) {
-    animateHug();
-  }
-}
-
-function giveHug(type, dayId) {
-  const dayData = valentineWeekData.days.find(d => d.id === dayId);
-  if (!dayData) return;
-  
-  const game = dayData.interactive;
-  game.hugsGiven = Math.min(game.hugsGiven + 1, game.targetHugs);
-  game.warmthLevel = Math.min(game.warmthLevel + 10, 100);
-  
-  // Animate hug
-  animateHug();
-  
-  // Update UI
-  const hugsGivenElement = document.getElementById('hugs-given');
-  const warmthFillElement = document.getElementById('warmth-fill');
-  
-  if (hugsGivenElement) hugsGivenElement.textContent = game.hugsGiven;
-  if (warmthFillElement) {
-    warmthFillElement.style.width = `${game.warmthLevel}%`;
-  }
-  
-  // Show hug message
-  const messages = {
-    bear: "🐻 A strong, comforting bear hug!",
-    side: "👫 A sweet, casual side hug!",
-    surprise: "🎁 A surprise hug from behind!"
-  };
-  showToast(messages[type] || "💖 A loving hug!");
-  
-  // Check if target reached
-  if (game.hugsGiven >= game.targetHugs) {
-    setTimeout(() => {
-      loadHugGame(dayData);
-      showToast("🏆 You've become a Hug Master! My heart is so warm!");
-    }, 500);
-  }
-}
-
-function animateHug() {
-  const yourArms = document.getElementById('your-arms');
-  const myArms = document.getElementById('my-arms');
-  
-  if (yourArms && myArms) {
-    yourArms.style.animation = 'hugAnimation 0.5s ease';
-    myArms.style.animation = 'hugAnimation 0.5s ease';
-    
-    setTimeout(() => {
-      yourArms.style.animation = '';
-      myArms.style.animation = '';
-    }, 500);
-  }
-}
-
-// Day 7: Kiss Collection
-function loadKissGame(dayData) {
-  const game = dayData.interactive;
-  const collected = game.kisses.filter(k => k.unlocked).length;
-  
-  const html = `
-    <div class="kiss-game">
-      <h3 style="color: ${dayData.color}">Collect Kiss Memories</h3>
-      <p>Complete all kiss types to unlock our special Valentine's memory!</p>
-      
-      <div class="kiss-collection">
-        ${game.kisses.map(kiss => `
-          <div class="kiss-card ${kiss.unlocked ? 'unlocked' : ''}" 
-               style="border-color: ${kiss.unlocked ? dayData.color : '#ddd'}"
-               onclick="${!kiss.unlocked ? `unlockKiss('${kiss.type}', ${dayData.id})` : ''}">
-            <div class="kiss-icon">${kiss.icon}</div>
-            <h4>${kiss.name}</h4>
-            <p>${kiss.description}</p>
-            <div class="kiss-status">
-              ${kiss.unlocked ? '✓ Unlocked' : '🔒 Locked'}
-            </div>
-            ${!kiss.unlocked ? `
-              <button class="unlock-btn" style="background: ${dayData.color}">
-                Click to unlock
-              </button>
-            ` : ''}
-          </div>
-        `).join('')}
-      </div>
-      
-      <div class="kiss-progress">
-        <div class="collection-progress" style="border-color: ${dayData.color}">
-          Collected: <span id="kisses-collected">${collected}</span>/3
-        </div>
-        
-        <div class="heartbeat-visualizer">
-          <div class="heartbeat-line">
-            <div class="beat" style="animation-delay: 0s; background: ${dayData.color}"></div>
-            <div class="beat" style="animation-delay: 0.5s; background: ${dayData.color}"></div>
-            <div class="beat" style="animation-delay: 1s; background: ${dayData.color}"></div>
-          </div>
-          <p>Our heartbeat syncs with each collected kiss 💓</p>
-        </div>
-      </div>
-      
-      ${collected === 3 ? `
-        <div class="final-unlock" id="final-unlock">
-          <div class="fireworks-container" id="fireworks"></div>
-          <h3>💖 All Kisses Collected! 💖</h3>
-          <p>You've unlocked the complete collection of our loving kisses!</p>
-          <p>Every kiss with you tells a story of love, passion, and forever.</p>
-          
-          <button class="btn celebration-btn" onclick="completeValentineDay(${dayData.id})" 
-                  style="background: ${dayData.color}; margin-top: 20px;">
-            Complete Valentine's Week <i class="fas fa-trophy"></i>
-          </button>
-        </div>
-      ` : ''}
-    </div>
-  `;
-  
-  document.getElementById('interactive-game').innerHTML = html;
-  
-  // Add fireworks if all collected
-  if (collected === 3) {
-    createFireworks();
-  }
-}
-
-function unlockKiss(type, dayId) {
-  const dayData = valentineWeekData.days.find(d => d.id === dayId);
-  if (!dayData) return;
-  
-  const kiss = dayData.interactive.kisses.find(k => k.type === type);
-  if (!kiss || kiss.unlocked) return;
-  
-  kiss.unlocked = true;
-  
-  // Show unlock message
-  const messages = {
-    forehead: "💋 A gentle forehead kiss - protective and loving",
-    cheek: "😘 A sweet cheek kiss - affectionate and tender", 
-    lips: "❤️ A passionate lip kiss - deep and meaningful"
-  };
-  showToast(messages[type] || "💖 Kiss unlocked!");
-  
-  // Reload game to show updated state
-  loadKissGame(dayData);
-  
-  // Check if all kisses collected
-  const allUnlocked = dayData.interactive.kisses.every(k => k.unlocked);
-  if (allUnlocked) {
-    dayData.interactive.allUnlocked = true;
-    setTimeout(() => {
-      showToast("🎉 All kisses collected! Our love is complete!");
-    }, 1000);
-  }
-}
-
-function createFireworks() {
-  const container = document.getElementById('fireworks');
-  if (!container) return;
-  
-  container.innerHTML = '';
-  
-  for (let i = 0; i < 20; i++) {
-    const firework = document.createElement('div');
-    firework.className = 'firework';
-    firework.style.cssText = `
-      position: absolute;
-      width: 5px;
-      height: 5px;
-      background: ${['#e74c89', '#ff6b8b', '#ffccd5', '#9b59b6'][i % 4]};
-      border-radius: 50%;
-      top: ${Math.random() * 100}%;
-      left: ${Math.random() * 100}%;
-      animation: fireworkExplode 1s ease-out infinite;
-      animation-delay: ${i * 0.1}s;
-    `;
-    container.appendChild(firework);
-  }
-}
-
-// Helper Functions
-function prevValentineDay() {
-  if (valentineWeekData.currentDay > 1) {
-    goToValentineDay(valentineWeekData.currentDay - 1);
-  }
-}
-
-function nextValentineDay() {
-  if (valentineWeekData.currentDay < 7) {
-    goToValentineDay(valentineWeekData.currentDay + 1);
-  }
-}
-
-function completeValentineDay(dayId) {
-  if (!valentineWeekData.progress.includes(dayId)) {
-    valentineWeekData.progress.push(dayId);
-    localStorage.setItem('valentineProgress', JSON.stringify(valentineWeekData.progress));
-    
-    // Update UI
-    updateValentineProgress();
-    
-    // Show celebration
-    showToast(`🎉 Day ${dayId} completed! Memory saved in your heart!`);
-    
-    // Reload current day to show completion status
-    setTimeout(() => {
-      loadValentineDay(dayId);
-    }, 500);
-  }
-}
-
-function updateValentineProgress() {
-  const completed = valentineWeekData.progress.length;
-  const progressFill = document.getElementById('week-progress-fill');
-  const currentDayElement = document.getElementById('current-day');
-  const completedDaysElement = document.getElementById('completed-days');
-  
-  if (progressFill) {
-    progressFill.style.width = `${(completed / 7) * 100}%`;
-  }
-  
-  if (currentDayElement) {
-    currentDayElement.textContent = valentineWeekData.currentDay;
-  }
-  
-  if (completedDaysElement) {
-    completedDaysElement.textContent = completed;
-  }
-  
-  // Update day status indicators
-  valentineWeekData.days.forEach(day => {
-    const statusElement = document.getElementById(`day${day.id}-status`);
-    if (statusElement) {
-      statusElement.innerHTML = Array(7).fill().map((_, i) => 
-        i < day.id ? '●' : '○'
-      ).join('');
-      statusElement.style.color = valentineWeekData.progress.includes(day.id) ? '#2ecc71' : day.color;
-    }
-    
-    // Update day card completion status
-    const dayCard = document.querySelector(`.day-card[data-day="${day.id}"]`);
-    if (dayCard) {
-      if (valentineWeekData.progress.includes(day.id)) {
-        dayCard.classList.add('completed');
-      } else {
-        dayCard.classList.remove('completed');
-      }
-    }
-  });
-}
-
-function viewMemory(memoryName) {
-  showToast(`💭 Remembering: ${memoryName}`);
-}
-
-function toggleDaySound(dayId) {
-  showToast("🔊 Day music coming soon!");
-}
-
-function showDayHint(dayId) {
-  const hints = [
-    "💡 Hint: Click all interactive elements to unlock everything!",
-    "💡 Hint: Don't forget to view all photos for special unlocks!",
-    "💡 Hint: Complete the games to mark the day as finished!",
-    "💡 Hint: Your progress is saved automatically!",
-    "💡 Hint: You can return to any day from the week hub!",
-    "💡 Hint: Try different interactions for surprises!",
-    "💡 Hint: The more you explore, the more you unlock!"
-  ];
-  showToast(hints[dayId - 1] || "💡 Explore everything on this page!");
-}
-
-// Initialize Valentine Week on page load
+// Initialize everything when page loads
 document.addEventListener('DOMContentLoaded', function() {
+  // Setup Page 2
+  setupPage2();
+  
   // Update progress display
   updateValentineProgress();
   
-  // Make functions globally available
+  // Make enhanced functions globally available
   window.goToValentineDay = goToValentineDay;
-  window.prevValentineDay = prevValentineDay;
-  window.nextValentineDay = nextValentineDay;
+  window.prevValentineDayEnhanced = prevValentineDayEnhanced;
+  window.nextValentineDayEnhanced = nextValentineDayEnhanced;
   window.completeValentineDay = completeValentineDay;
-  window.findRose = findRose;
-  window.chooseProposalScenario = chooseProposalScenario;
-  window.unwrapChocolate = unwrapChocolate;
-  window.collectAccessory = collectAccessory;
-  window.answerTeddyQuiz = answerTeddyQuiz;
-  window.addPromiseToTree = addPromiseToTree;
-  window.addSuggestedPromise = addSuggestedPromise;
-  window.giveHug = giveHug;
-  window.unlockKiss = unlockKiss;
+  window.findRoseEnhanced = findRoseEnhanced;
+  window.chooseProposalScenarioEnhanced = chooseProposalScenarioEnhanced;
+  window.unwrapChocolateEnhanced = unwrapChocolateEnhanced;
+  window.collectAccessoryEnhanced = collectAccessoryEnhanced;
+  window.answerTeddyQuizEnhanced = answerTeddyQuizEnhanced;
+  window.addPromiseToTreeEnhanced = addPromiseToTreeEnhanced;
+  window.addSuggestedPromiseEnhanced = addSuggestedPromiseEnhanced;
+  window.giveHugEnhanced = giveHugEnhanced;
+  window.unlockKissEnhanced = unlockKissEnhanced;
   window.viewMemory = viewMemory;
   window.toggleDaySound = toggleDaySound;
-  window.showDayHint = showDayHint;
+  window.showDayHintEnhanced = showDayHintEnhanced;
+  window.showCompleteWeekConfirmation = showCompleteWeekConfirmation;
+  window.completeEntireWeek = completeEntireWeek;
+  window.closeConfirmation = closeConfirmation;
+  
+  // Override the original loadDay function
+  const originalLoadDay = window.loadValentineDay;
+  window.loadValentineDay = function(dayNumber) {
+    valentineWeekData.currentDay = dayNumber;
+    
+    // Hide all pages
+    document.querySelectorAll('.page').forEach(page => {
+      page.classList.remove('active');
+      page.style.display = 'none';
+    });
+    
+    // Show valentine day container
+    const dayContainer = document.getElementById('valentine-day-container');
+    dayContainer.style.display = 'flex';
+    dayContainer.classList.add('active');
+    
+    // Load the day with enhanced HTML
+    const dayData = valentineWeekData.days.find(d => d.id === dayNumber);
+    if (dayData) {
+      // Update progress
+      updateValentineProgress();
+      
+      // Generate enhanced day HTML
+      const dayHTML = generateDayHTMLEnhanced(dayData);
+      document.getElementById('day-content').innerHTML = dayHTML;
+      
+      // Initialize the enhanced interactive game
+      setTimeout(() => {
+        initializeDayGameEnhanced(dayData);
+      }, 100);
+      
+      // Scroll to top
+      window.scrollTo(0, 0);
+    }
+  };
 });
 
-// Add animation for hug
-if (!document.querySelector('#hugAnimation')) {
-  const style = document.createElement('style');
-  style.id = 'hugAnimation';
-  style.textContent = `
-    @keyframes hugAnimation {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.2); }
-      100% { transform: scale(1); }
-    }
-    
-    @keyframes fireworkExplode {
-      0% { transform: scale(0); opacity: 1; }
-      50% { opacity: 1; }
-      100% { transform: scale(2); opacity: 0; }
-    }
-    
-    .tree-leaf {
-      position: absolute;
-      width: 80px;
-      height: 80px;
-      background: rgba(46, 204, 113, 0.2);
-      border: 2px solid #2ecc71;
-      border-radius: 50% 0 50% 0;
-      transform: scale(0);
-      opacity: 0;
-      transition: all 0.5s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.8rem;
-      text-align: center;
-      padding: 10px;
-      color: #27ae60;
-    }
-    
-    .accessory-item {
-      background: white;
-      border: 2px solid #e9ecef;
-      border-radius: 15px;
-      padding: 20px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    
-    .accessory-item:hover {
-      transform: translateY(-5px);
-      border-color: #e74c89;
-    }
-    
-    .accessory-item.collected {
-      background: #fff9fa;
-      border-color: #e74c89;
-    }
-    
-    .accessory-icon {
-      font-size: 2.5rem;
-      margin-bottom: 10px;
-    }
-    
-    .quiz-option {
-      background: #f8f9fa;
-      border: 2px solid #e9ecef;
-      border-radius: 10px;
-      padding: 15px;
-      margin: 5px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    
-    .quiz-option:hover {
-      background: #e74c89;
-      color: white;
-      border-color: #e74c89;
-    }
-    
-    .fireworks-container {
-      position: relative;
-      width: 100%;
-      height: 100px;
-      overflow: hidden;
-      margin: 20px 0;
-    }
-  `;
-  document.head.appendChild(style);
-}
+// Add these animations to CSS if not present
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); opacity: 0.7; }
+    50% { transform: scale(1.1); opacity: 1; }
+  }
+  
+  @keyframes fireworkExplode {
+    0% { transform: scale(0); opacity: 1; }
+    50% { opacity: 1; }
+    100% { transform: scale(2); opacity: 0; }
+  }
+  
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  @keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+  
+  .hugging .hug-character {
+    animation: hugPulse 0.5s ease;
+  }
+  
+  @keyframes hugPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+  }
+`;
+document.head.appendChild(style);
