@@ -313,6 +313,71 @@ function initializePage(pageNumber) {
     }
 }
 
+
+// ======================
+// ANNOYING NO BUTTON FUNCTIONALITY
+// ======================
+
+function setupAnnoyingNoButton() {
+    const noButton = document.getElementById('floating-no-btn');
+    if (!noButton) return;
+    
+    // Reset position
+    noButtonPosition = { x: 50, y: 50 };
+    updateNoButtonPosition();
+    
+    // Set up click event
+    noButton.onclick = function() {
+        showToast("Nice try! But you can't catch me that easily! 😜");
+        moveNoButtonAway();
+    };
+    
+    // Start moving the button randomly
+    if (noButtonInterval) {
+        clearInterval(noButtonInterval);
+    }
+    
+    noButtonInterval = setInterval(() => {
+        moveNoButtonRandomly();
+    }, 1500); // Move every 1.5 seconds
+}
+
+function moveNoButtonRandomly() {
+    // Generate random position (within bounds)
+    const newX = 20 + Math.random() * 60; // 20% to 80%
+    const newY = 20 + Math.random() * 60; // 20% to 80%
+    
+    noButtonPosition = { x: newX, y: newY };
+    updateNoButtonPosition();
+}
+
+function moveNoButtonAway() {
+    // Move button away from current position
+    const directionX = Math.random() > 0.5 ? 1 : -1;
+    const directionY = Math.random() > 0.5 ? 1 : -1;
+    
+    const newX = Math.max(10, Math.min(90, noButtonPosition.x + (directionX * 20)));
+    const newY = Math.max(10, Math.min(90, noButtonPosition.y + (directionY * 20)));
+    
+    noButtonPosition = { x: newX, y: newY };
+    updateNoButtonPosition();
+}
+
+function updateNoButtonPosition() {
+    const noButton = document.getElementById('floating-no-btn');
+    if (noButton) {
+        noButton.style.position = 'absolute';
+        noButton.style.left = `${noButtonPosition.x}%`;
+        noButton.style.top = `${noButtonPosition.y}%`;
+        noButton.style.transform = 'translate(-50%, -50%)';
+        noButton.style.transition = 'left 0.5s ease, top 0.5s ease';
+        noButton.style.zIndex = '100';
+    }
+}
+
+
+
+
 function startAutoTransition(seconds, nextPage, countdownId) {
     let countdown = seconds;
     const countdownElement = document.getElementById(countdownId);
@@ -1220,7 +1285,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Expose functions to global scope
     window.goToPage = goToPage;
-    window.funnyNo = funnyNo;
+    // Removed: window.funnyNo = funnyNo; (since we removed the function)
     window.useHint = useHint;
     window.checkScramble = checkScramble;
     window.resetScramble = resetScramble;
